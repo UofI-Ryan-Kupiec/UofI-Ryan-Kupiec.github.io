@@ -1,1 +1,35 @@
-<h>Hello</h>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D3.js Example</title>
+  <!-- Link D3.js from a CDN (Content Delivery Network) -->
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+</head>
+<body>
+  <h1>D3.js Example</h1>
+  <div id="chart"></div>
+
+  <script>
+    // Your D3.js code goes here
+    // For example, you can create a simple bar chart:
+    const data = [10, 20, 30, 40, 50];
+
+    const svg = d3.select("#chart")
+      .append("svg")
+      .attr("width", 300)
+      .attr("height", 200);
+
+    svg.selectAll("rect")
+      .data(data)
+      .enter()
+      .append("rect")
+      .attr("x", (d, i) => i * 40)
+      .attr("y", d => 200 - d)
+      .attr("width", 30)
+      .attr("height", d => d)
+      .attr("fill", "steelblue");
+  </script>
+</body>
+</html>
