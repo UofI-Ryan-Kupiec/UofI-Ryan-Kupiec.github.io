@@ -1,53 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>D3.js Scatter Plot</title>
-  <script src='https://d3js.org/d3.v5.min.js'></script>
-  <style>
-    /* Add any CSS styles here, if needed */
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Baseball HR/G Scatter Plot</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
-  <svg id="scatterplot"></svg>
+  <div id="scatterplot-container"></div>
 
   <script>
-    async function init() {
-      const data = await d3.csv('https://flunky.github.io/cars2017.csv');
+    const svgWidth = window.innerWidth * 0.8;
+    const svgHeight = window.innerHeight * 0.8;
+    const margin = { top: 50, right: 50, bottom: 70, left: 70 };
+    const width = svgWidth - margin.left - margin.right;
+    const height = svgHeight - margin.top - margin.bottom;
 
-      // Get the screen dimensions
-      const screenWidth = window.innerWidth;
-      const screenHeight = window.innerHeight;
+    const svg = d3.select("#scatterplot-container")
+      .append("svg")
+      .attr("width", svgWidth)
+      .attr("height", svgHeight);
 
-      // Set some padding values to avoid the edges of the screen
-      const margin = { top: 50, right: 50, bottom: 50, left: 50 };
-      const width = screenWidth - margin.left - margin.right;
-      const height = screenHeight - margin.top - margin.bottom;
+    const dataUrl = "https://raw.githubusercontent.com/UofI-Ryan-Kupiec/UofI-Ryan-Kupiec.github.io/main/Baseball_Hitting_Historic_Data.csv";
+    d3.csv(dataUrl).then((data) => {
+      data.forEach((d) => {
+        d.Year = +d.Year;
+        d['HR/G'] = +d['HR/G'];
+      });
 
-      // Create the SVG element
-      var svg = d3.select("#scatterplot")
-                  .attr("width", width + margin.left + margin.right)
-                  .attr("height", height + margin.top + margin.bottom)
-                  .append("g")
-                  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      const xScale = d3.scaleLinear()
+        .domain(d3.extent(data, (d) => d.Year))
+        .range([margin.left, width - margin.right]);
 
-      var xScale = d3.scaleLog()
-                     .domain(d3.extent(data, function(d) { return +d.AverageHighwayMPG; }))
-                     .range([0, width]);
+      const yScale = d3.scaleLinear()
+        .domain(d3.extent(data, (d) => d['HR/G']))
+        .range([height - margin.bottom, margin.top]);
 
-      var yScale = d3.scaleLog()
-                     .domain(d3.extent(data, function(d) { return +d.AverageCityMPG; }))
-                     .range([height, 0]);
+      const xAxis = d3.axisBottom(xScale);
+      const yAxis = d3.axisLeft(yScale);
+
+      svg.append("g")
+        .attr("transform", `translate(0, ${height - margin.bottom})`)
+        .call(xAxis);
+
+      svg.append("g")
+        .attr("transform", `translate(${margin.left}, 0)`)
+        .call(yAxis);
 
       svg.selectAll("circle")
-         .data(data)
-         .enter()
-         .append("circle")
-         .attr("cx", function(d) { return xScale(+d.AverageHighwayMPG); })
-         .attr("cy", function(d) { return yScale(+d.AverageCityMPG); })
-         .attr("r", 5);
-    }
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("cx", (d) => xScale(d.Year))
+        .attr("cy", (d) => yScale(d['HR/G']))
+        .attr("r", 5)
+        .attr("fill", "blue");
 
-    init();
+      svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", height - margin.bottom / 2)
+        .attr("text-anchor", "middle")
+        .text("Year");
+
+      svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -height / 2)
+        .attr("y", margin.left / 2)
+        .attr("text-anchor", "middle")
+        .text("HR/G (Home Runs per Game)");
+    });
   </script>
 </body>
 </html>
