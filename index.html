@@ -1,3 +1,5 @@
+// const dataUrl = "https://raw.githubusercontent.com/UofI-Ryan-Kupiec/UofI-Ryan-Kupiec.github.io/main/Baseball_Hitting_Historic_Data.csv";
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,8 +23,10 @@
       .attr("width", svgWidth)
       .attr("height", svgHeight);
 
+    // const dataUrl = "https://raw.githubusercontent.com/UofI-Ryan-Kupiec/UofI-Ryan-Kupiec.github.io/main/Baseball_Hitting_Historic_Data.csv";
     const dataUrl = "https://raw.githubusercontent.com/UofI-Ryan-Kupiec/UofI-Ryan-Kupiec.github.io/main/Baseball_Hitting_Historic_Data.csv";
     d3.csv(dataUrl).then((data) => {
+      // Convert data to numbers
       data.forEach((d) => {
         d.Year = +d.Year;
         d['HR/G'] = +d['HR/G'];
@@ -68,6 +72,13 @@
         .attr("y", margin.left / 2)
         .attr("text-anchor", "middle")
         .text("HR/G (Home Runs per Game)");
+
+      svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", margin.top / 2)
+        .attr("text-anchor", "middle")
+        .style("font-size", "1.5em")
+        .text("Home Runs per Game over Time");
     });
   </script>
 </body>
