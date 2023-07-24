@@ -8,7 +8,6 @@
 </head>
 <body>
   <div id="scatterplot-container"></div>
-  
 
   <script>
     const svgWidth = window.innerWidth * 0.8;
@@ -31,7 +30,7 @@
         d['HR/G'] = +d['HR/G'];
       });
 
-      const xScale = d3.scaleTime() // Use scaleTime for the X-axis
+      const xScale = d3.scaleTime()
         .domain(d3.extent(data, (d) => d.Year))
         .range([margin.left, width - margin.right]);
 
@@ -40,7 +39,7 @@
         .range([height - margin.bottom, margin.top]);
 
       const xAxis = d3.axisBottom(xScale)
-                      .ticks(d3.timeYear.every(5)); // Adjust the number of ticks if needed
+                      .ticks(d3.timeYear.every(5));
 
       const yAxis = d3.axisLeft(yScale);
 
@@ -80,6 +79,40 @@
         .attr("text-anchor", "middle")
         .style("font-size", "1.5em")
         .text("Home Runs per Game over Time");
+
+      // Add captions for the "steroid era"
+      const steroidYears = data.filter(d => d.Year.getFullYear() >= 1993 && d.Year.getFullYear() <= 2004);
+      const captions = [
+        { year: 1994, text: "1994: MLB strike-shortened season" },
+        { year: 1998, text: "1998: Mark McGwire and Sammy Sosa chase the single-season home run record" },
+        { year: 2001, text: "2001: Barry Bonds sets the single-season home run record" },
+        { year: 2004, text: "2004: Federal investigation into steroid use in MLB" }
+        // Add more captions for other years as needed
+      ];
+
+      svg.selectAll(".caption")
+        .data(captions)
+        .enter()
+        .append("text")
+        .attr("class", "caption")
+        .attr("x", d => xScale(d.year))
+        .attr("y", d => yScale(d3.max(steroidYears, e => e['HR/G'])) + 25)
+        .attr("text-anchor", "middle")
+        .style("font-size", "12px")
+        .text(d => d.text);
+
+      // Add circle markers for steroid years
+      svg.selectAll(".steroid-circle")
+        .data(steroidYears)
+        .enter()
+        .append("circle")
+        .attr("class", "steroid-circle")
+        .attr("cx", d => xScale(d.Year))
+        .attr("cy", d => yScale(d['HR/G']))
+        .attr("r", 8)
+        .attr("fill", "red")
+        .attr("opacity", 0.7);
+
     });
   </script>
 </body>
