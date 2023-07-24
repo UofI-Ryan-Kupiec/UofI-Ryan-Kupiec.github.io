@@ -21,21 +21,16 @@
       .attr("width", svgWidth)
       .attr("height", svgHeight);
 
-    // const dataUrl = "https://raw.githubusercontent.com/UofI-Ryan-Kupiec/UofI-Ryan-Kupiec.github.io/main/Baseball_Hitting_Historic_Data.csv";
+    // Fetch data from the CSV file
     const dataUrl = "https://raw.githubusercontent.com/UofI-Ryan-Kupiec/UofI-Ryan-Kupiec.github.io/main/Baseball_Hitting_Historic_Data.csv";
     d3.csv(dataUrl).then((data) => {
-    const parseYear = d3.timeParse('%Y');
-    data.forEach(d => {
-      d.Year = parseYear(d.Year.toString());
-      d['HR/G'] = +d['HR/G'];
-    });
+      const parseYear = d3.timeParse('%Y');
+      data.forEach(d => {
+        d.Year = parseYear(d.Year.toString());
+        d['HR/G'] = +d['HR/G'];
+      });
 
-    const parseYear = d3.timeParse('%Y');
-    data.forEach(d => {
-      d.Year = parseYear(d.Year.toString());
-    });
-      
-      const xScale = d3.scaleLinear()
+      const xScale = d3.scaleTime() // Use scaleTime for the X-axis
         .domain(d3.extent(data, (d) => d.Year))
         .range([margin.left, width - margin.right]);
 
@@ -43,7 +38,9 @@
         .domain(d3.extent(data, (d) => d['HR/G']))
         .range([height - margin.bottom, margin.top]);
 
-      const xAxis = d3.axisBottom(xScale);
+      const xAxis = d3.axisBottom(xScale)
+                      .ticks(d3.timeYear.every(5)); // Adjust the number of ticks if needed
+
       const yAxis = d3.axisLeft(yScale);
 
       svg.append("g")
