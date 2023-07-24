@@ -32,6 +32,11 @@
         d['HR/G'] = +d['HR/G'];
       });
 
+    const parseYear = d3.timeParse('%Y');
+    data.forEach(d => {
+      d.Year = parseYear(d.Year.toString());
+    });
+      
       const xScale = d3.scaleLinear()
         .domain(d3.extent(data, (d) => d.Year))
         .range([margin.left, width - margin.right]);
