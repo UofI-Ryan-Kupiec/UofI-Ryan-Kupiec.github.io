@@ -115,6 +115,7 @@ function drawChart2(data) {
       const svg = d3.select("#scatterplot-container svg");
       // Clear the contents of the SVG container
       svg.html("");
+  
       const xScale = d3.scaleTime()
         .domain(d3.extent(data, function(d) { return d.Year; }))
         .range([margin.left, width - margin.right]);
@@ -122,9 +123,6 @@ function drawChart2(data) {
       const yScale = d3.scaleLinear()
         .domain(d3.extent(data, function(d) { return d.BA; }))
         .range([height - margin.bottom, margin.top]);
-
-      const xAxis = d3.axisBottom(xScale).ticks(d3.timeYear.every(5));
-      const yAxis = d3.axisLeft(yScale);
 
       svg.append("g")
         .attr("transform", `translate(0, ${height - margin.bottom})`)
