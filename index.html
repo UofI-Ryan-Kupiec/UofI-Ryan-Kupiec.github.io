@@ -90,8 +90,7 @@
         // Add more captions for other years as needed
       ];
 
-      const captionPadding = 25; // Padding between captions
-      const captionYOffset = -5; // Y-axis offset for the captions
+      const captionPadding = 15; // Padding between captions
 
       svg.selectAll(".caption")
         .data(captions)
@@ -99,7 +98,8 @@
         .append("text")
         .attr("class", "caption")
         .attr("x", d => xScale(d.year))
-        .attr("y", (d, i) => yScale(d3.max(steroidYears, e => e['HR/G'])) + captionPadding * i + captionYOffset)
+        .attr("y", d => yScale(d3.max(steroidYears, e => e['HR/G'])))
+        .attr("dy", (d, i) => -captionPadding * i) // Adjust the vertical position
         .attr("text-anchor", "middle")
         .style("font-size", "12px")
         .text(d => d.text);
