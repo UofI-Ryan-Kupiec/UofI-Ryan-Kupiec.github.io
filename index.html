@@ -112,7 +112,9 @@
     }
 
 function drawChart2(data) {
-      const svg = d3.select("#scatterplot-container");
+      const svg = d3.select("#scatterplot-container svg");
+      // Clear the contents of the SVG container
+      svg.html("");
       const xScale = d3.scaleTime()
         .domain(d3.extent(data, function(d) { return d.Year; }))
         .range([margin.left, width - margin.right]);
