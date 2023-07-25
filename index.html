@@ -190,7 +190,8 @@
         'BA': +d['BA']
       };
     }).then(function(data) {
-      drawLineChart1(data); // Draw the initial chart with the first set of data
+      const filteredData = filterDataByYearRange(data, 2000, 2022);
+      drawLineChart1(filteredData); // Draw the initial chart with the first set of data
     });
   </script>
 </body>
