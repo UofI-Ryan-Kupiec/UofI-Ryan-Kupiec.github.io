@@ -196,15 +196,6 @@ function drawChart2(data) {
       });
     });
 
-    // Fetch data from the CSV file and draw the initial chart
-    d3.csv(dataUrl, function(d) {
-      return {
-        Year: d3.timeParse('%Y')(d.Year.toString()),
-        'HR/G': +d['HR/G']
-      };
-    }).then(function(data) {
-      drawChart1(data); // Draw the initial chart with the first set of data
-    });
   </script>
 </body>
 </html>
