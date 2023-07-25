@@ -23,7 +23,7 @@
     const dataUrl = "https://raw.githubusercontent.com/UofI-Ryan-Kupiec/UofI-Ryan-Kupiec.github.io/main/Baseball_Hitting_Historic_Data.csv";
 
     function drawChart1(data) {
-      const svg = d3.select("#scatterplot-container svg:nth-child(1)");
+      const svg = d3.select("#scatterplot-container");
       // Setup scales and axes for the first chart
       const xScale = d3.scaleTime()
         .domain(d3.extent(data, function(d) { return d.Year; }))
@@ -111,7 +111,7 @@
     }
 
     function drawChart2(data) {
-      const svg = d3.select("#scatterplot-container svg:nth-child(2)");
+      const svg = d3.select("#scatterplot-container");
       const xScale = d3.scaleTime()
         .domain(d3.extent(data, function(d) { return d.Year; }))
         .range([margin.left, width - margin.right]);
