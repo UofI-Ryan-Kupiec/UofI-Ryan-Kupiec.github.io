@@ -39,18 +39,13 @@
         .domain(d3.extent(data, (d) => d['HR/G']))
         .range([height - margin.bottom, margin.top]);
 
-      const xAxis = d3.axisBottom(xScale)
-                      .ticks(d3.timeYear.every(5));
-
-      const yAxis = d3.axisLeft(yScale);
-
       svg.append("g")
         .attr("transform", `translate(0, ${height - margin.bottom})`)
-        .call(xAxis);
+        .call(d3.axisBottom(xScale).ticks(d3.timeYear.every(5)));
 
       svg.append("g")
         .attr("transform", `translate(${margin.left}, 0)`)
-        .call(yAxis);
+        .call(d3.axisLeft(yScale));
 
       svg.selectAll("circle")
         .data(data)
