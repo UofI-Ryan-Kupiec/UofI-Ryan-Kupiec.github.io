@@ -24,6 +24,8 @@
     const dataUrl = "https://raw.githubusercontent.com/UofI-Ryan-Kupiec/UofI-Ryan-Kupiec.github.io/main/Baseball_Hitting_Historic_Data.csv";
 
     function drawChart1(data) {
+      const svg = d3.select("#chart1");
+      
       // Setup scales and axes for the first chart
       const xScale = d3.scaleTime()
         .domain(d3.extent(data, function(d) { return d.Year; }))
@@ -111,6 +113,8 @@
     }
 
     function drawChart2(data) {
+      const svg = d3.select("#chart2");
+      
       // Setup scales and axes for the first chart
       const xScale = d3.scaleTime()
         .domain(d3.extent(data, function(d) { return d.Year; }))
@@ -162,6 +166,8 @@
     }
 
     function drawChart3(data) {
+      const svg = d3.select("#chart3");
+      
       // Setup scales and axes for the third chart
       const xScale = d3.scaleLinear()
         .domain(d3.extent(data, function(d) { return d.SomeOtherXData; }))
@@ -186,7 +192,7 @@
       // Depending on the current scene, call the appropriate function to draw the next chart
       if (currentScene === 1) {
         // Code to draw the first chart
-        drawChart1(data1); // Pass the data for the first chart
+        drawChart1(data); // Pass the data for the first chart
       } else if (currentScene === 2) {
         // Code to draw the second chart
         drawChart2(data); // Pass the data for the second chart
