@@ -171,13 +171,9 @@
         };
       }).then(function(data) {
         if (currentScene === 1) {
-          const filteredData = filterDataByYearRange(data, 2000, 2022);
-          drawLineChart1(filteredData);
-          // drawLineChart1(data); // Draw the first chart
+          drawLineChart1(data); // Draw the first chart
         } else if (currentScene === 2) {
-          const filteredData = filterDataByYearRange(data, 2000, 2022);
-          drawLineChart2(filteredData);
-          // drawLineChart2(data); // Draw the second chart
+          drawLineChart2(data); // Draw the second chart
         }
       });
     });
@@ -190,8 +186,7 @@
         'BA': +d['BA']
       };
     }).then(function(data) {
-      const filteredData = filterDataByYearRange(data, 2000, 2022);
-      drawLineChart1(filteredData); // Draw the initial chart with the first set of data
+      drawLineChart1(data); // Draw the initial chart with the first set of data
     });
   </script>
 </body>
