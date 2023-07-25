@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Baseball HR/G and BA Scatter Plots</title>
+  <title>Baseball HR/G and BA Line Charts</title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
-  <div id="scatterplot-container">
+  <div id="linechart-container">
     <svg class="chart" width="100%" height="100%" viewBox="0 0 800 600"></svg>
   </div>
   <button id="next-button">Next</button>
@@ -20,8 +20,8 @@
     const height = svgHeight - margin.top - margin.bottom;
     const dataUrl = "https://raw.githubusercontent.com/UofI-Ryan-Kupiec/UofI-Ryan-Kupiec.github.io/main/Baseball_Hitting_Historic_Data.csv";
 
-    function drawChart1(data) {
-      const svg = d3.select("#scatterplot-container svg");
+    function drawLineChart1(data) {
+      const svg = d3.select("#linechart-container svg");
       // Clear the contents of the SVG container
       svg.html("");
 
@@ -45,6 +45,17 @@
         .attr("transform", `translate(${margin.left}, 0)`)
         .call(d3.axisLeft(yScale));
 
+      const line = d3.line()
+        .x(d => xScale(d.Year))
+        .y(d => yScale(d['HR/G']));
+
+      svg.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "blue")
+        .attr("stroke-width", 2)
+        .attr("d", line);
+
       svg.selectAll("circle")
         .data(data)
         .enter()
@@ -52,7 +63,8 @@
         .attr("cx", (d) => xScale(d.Year))
         .attr("cy", (d) => yScale(d['HR/G']))
         .attr("r", 5)
-        .attr("fill", "blue");
+        .attr("fill", "blue")
+        .attr("opacity", 0.5);
 
       svg.append("text")
         .attr("x", width / 2)
@@ -73,46 +85,10 @@
         .attr("text-anchor", "middle")
         .style("font-size", "1.5em")
         .text("Home Runs per Game over Time");
-
-      // Add captions for the "steroid era"
-      const steroidYears = data.filter(d => d.Year.getFullYear() >= 1993 && d.Year.getFullYear() <= 2004);
-      const captions = [
-        { year: 1994, text: "1994: MLB strike-shortened season" },
-        { year: 1998, text: "1998: Mark McGwire and Sammy Sosa chase the single-season home run record" },
-        { year: 2001, text: "2001: Barry Bonds sets the single-season home run record" },
-        { year: 2004, text: "2004: Federal investigation into steroid use in MLB" }
-        // Add more captions for other years as needed
-      ];
-
-      const captionPadding = 15; // Padding between captions
-
-      svg.selectAll(".caption")
-        .data(captions)
-        .enter()
-        .append("text")
-        .attr("class", "caption")
-        .attr("x", d => xScale(d.year))
-        .attr("y", d => yScale(d3.max(steroidYears, e => e['HR/G'])))
-        .attr("dy", (d, i) => -captionPadding * i) // Adjust the vertical position
-        .attr("text-anchor", "middle")
-        .style("font-size", "12px")
-        .text(d => d.text);
-
-      // Add circle markers for steroid years
-      svg.selectAll(".steroid-circle")
-        .data(steroidYears)
-        .enter()
-        .append("circle")
-        .attr("class", "steroid-circle")
-        .attr("cx", d => xScale(d.Year))
-        .attr("cy", d => yScale(d['HR/G']))
-        .attr("r", 8)
-        .attr("fill", "red")
-        .attr("opacity", 0.7);
     }
 
-    function drawChart2(data) {
-      const svg = d3.select("#scatterplot-container svg");
+    function drawLineChart2(data) {
+      const svg = d3.select("#linechart-container svg");
       // Clear the contents of the SVG container
       svg.html("");
 
@@ -122,7 +98,7 @@
         .range([margin.left, width - margin.right]);
 
       const yScale = d3.scaleLinear()
-        .domain(d3.extent(data, function(d) { return d.BA; }))
+        .domain(d3.extent(data, function(d) { return d['BA']; }))
         .range([height - margin.bottom, margin.top]);
 
       svg.append("g")
@@ -133,14 +109,26 @@
         .attr("transform", `translate(${margin.left}, 0)`)
         .call(d3.axisLeft(yScale));
 
+      const line = d3.line()
+        .x(d => xScale(d.Year))
+        .y(d => yScale(d['BA']));
+
+      svg.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "blue")
+        .attr("stroke-width", 2)
+        .attr("d", line);
+
       svg.selectAll("circle")
         .data(data)
         .enter()
         .append("circle")
         .attr("cx", (d) => xScale(d.Year))
-        .attr("cy", (d) => yScale(d.BA))
+        .attr("cy", (d) => yScale(d['BA']))
         .attr("r", 5)
-        .attr("fill", "blue");
+        .attr("fill", "blue")
+        .attr("opacity", 0.5);
 
       svg.append("text")
         .attr("x", width / 2)
@@ -163,49 +151,39 @@
         .text("Batting Average over Time");
     }
 
-    function drawChart3(data) {
-      const svg = d3.select("#scatterplot-container svg");
-      // Clear the contents of the SVG container
-      svg.html("");
-
-      // Setup scales and axes for the third chart
-      // Your code to draw the third chart here
-    }
-
     // Initialize the scene number to 1 (first chart)
     let currentScene = 1;
 
     // Attach a click event listener to the "Next" button
     d3.select("#next-button").on("click", function() {
       // Increment the current scene number
-      currentScene = (currentScene % 3) + 1;
+      currentScene = (currentScene % 2) + 1;
 
       // Fetch data from the CSV file and draw the appropriate chart
       d3.csv(dataUrl, function(d) {
         return {
           Year: d3.timeParse('%Y')(d.Year.toString()),
           'HR/G': +d['HR/G'],
-          'BA': +d['BA'] // Add the 'BA' (Batting Average) data parsing here
+          'BA': +d['BA']
         };
       }).then(function(data) {
         if (currentScene === 1) {
-          drawChart1(data); // Draw the first chart
+          drawLineChart1(data); // Draw the first chart
         } else if (currentScene === 2) {
-          drawChart2(data); // Draw the second chart
-        } else if (currentScene === 3) {
-          drawChart3(data); // Draw the third chart
+          drawLineChart2(data); // Draw the second chart
         }
       });
     });
+
     // Fetch data from the CSV file and draw the initial chart
     d3.csv(dataUrl, function(d) {
       return {
         Year: d3.timeParse('%Y')(d.Year.toString()),
         'HR/G': +d['HR/G'],
-        'BA': +d['BA'] // Add the 'BA' (Batting Average) data parsing here
+        'BA': +d['BA']
       };
     }).then(function(data) {
-      drawChart1(data); // Draw the initial chart with the first set of data
+      drawLineChart1(data); // Draw the initial chart with the first set of data
     });
   </script>
 </body>
