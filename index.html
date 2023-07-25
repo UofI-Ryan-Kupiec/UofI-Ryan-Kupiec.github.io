@@ -7,37 +7,34 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
-  <div id="scatterplot-container"></div>
+  <div id="scatterplot-container">
+    <svg class="chart" width="100%" height="100%" viewBox="0 0 800 600"></svg>
+    <svg class="chart" width="100%" height="100%" viewBox="0 0 800 600" style="display: none;"></svg>
+    <svg class="chart" width="100%" height="100%" viewBox="0 0 800 600" style="display: none;"></svg>
+  </div>
   <button id="next-button">Next</button>
 
   <script>
-    const svgWidth = window.innerWidth * 0.8;
-    const svgHeight = window.innerHeight * 0.8;
+    const svgWidth = 800;
+    const svgHeight = 600;
     const margin = { top: 50, right: 50, bottom: 70, left: 70 };
     const width = svgWidth - margin.left - margin.right;
     const height = svgHeight - margin.top - margin.bottom;
-
-    const svg = d3.select("#scatterplot-container")
-      .append("svg")
-      .attr("width", svgWidth)
-      .attr("height", svgHeight);
-
-    // Fetch data from the CSV file
+    const charts = d3.selectAll('.chart');
     const dataUrl = "https://raw.githubusercontent.com/UofI-Ryan-Kupiec/UofI-Ryan-Kupiec.github.io/main/Baseball_Hitting_Historic_Data.csv";
-    d3.csv(dataUrl).then((data) => {
-      const parseYear = d3.timeParse('%Y');
-      data.forEach(d => {
-        d.Year = parseYear(d.Year.toString());
-        d['HR/G'] = +d['HR/G'];
-      });
 
+    function drawChart1(data) {
+      // Setup scales and axes for the first chart
       const xScale = d3.scaleTime()
-        .domain(d3.extent(data, (d) => d.Year))
+        .domain(d3.extent(data, function(d) { return d.Year; }))
         .range([margin.left, width - margin.right]);
 
       const yScale = d3.scaleLinear()
-        .domain(d3.extent(data, (d) => d['HR/G']))
+        .domain(d3.extent(data, function(d) { return d['HR/G']; }))
         .range([height - margin.bottom, margin.top]);
+
+      const xAxis = d3.axisBottom(xScale).ticks(d3.timeYear.every(5));
+      const yAxis = d3.axisLeft(yScale);
 
       svg.append("g")
         .attr("transform", `translate(0, ${height - margin.bottom})`)
@@ -111,8 +108,115 @@
         .attr("r", 8)
         .attr("fill", "red")
         .attr("opacity", 0.7);
+    }
 
+    function drawChart2(data) {
+      // Setup scales and axes for the first chart
+      const xScale = d3.scaleTime()
+        .domain(d3.extent(data, function(d) { return d.Year; }))
+        .range([margin.left, width - margin.right]);
+
+      const yScale = d3.scaleLinear()
+        .domain(d3.extent(data, function(d) { return d.BA; }))
+        .range([height - margin.bottom, margin.top]);
+
+      const xAxis = d3.axisBottom(xScale).ticks(d3.timeYear.every(5));
+      const yAxis = d3.axisLeft(yScale);
+
+      svg.append("g")
+        .attr("transform", `translate(0, ${height - margin.bottom})`)
+        .call(d3.axisBottom(xScale).ticks(d3.timeYear.every(5)));
+
+      svg.append("g")
+        .attr("transform", `translate(${margin.left}, 0)`)
+        .call(d3.axisLeft(yScale));
+
+      svg.selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("cx", (d) => xScale(d.Year))
+        .attr("cy", (d) => yScale(d.BA))
+        .attr("r", 5)
+        .attr("fill", "blue");
+
+      svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", height - margin.bottom / 2)
+        .attr("text-anchor", "middle")
+        .text("Year");
+
+      svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -height / 2)
+        .attr("y", margin.left / 2)
+        .attr("text-anchor", "middle")
+        .text("Batting Average");
+
+      svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", margin.top / 2)
+        .attr("text-anchor", "middle")
+        .style("font-size", "1.5em")
+        .text("Batting Average over Time");
+    }
+
+    function drawChart3(data) {
+      // Setup scales and axes for the third chart
+      const xScale = d3.scaleLinear()
+        .domain(d3.extent(data, function(d) { return d.SomeOtherXData; }))
+        .range([margin.left, width - margin.right]);
+
+      const yScale = d3.scaleLinear()
+        .domain(d3.extent(data, function(d) { return d.SomeOtherYData; }))
+        .range([height - margin.bottom, margin.top]);
+
+      const xAxis = d3.axisBottom(xScale);
+      const yAxis = d3.axisLeft(yScale);
+
+      // Draw the third chart using the scales and axes
+      // Your code to draw the third chart here
+    }
+
+    // Initialize the scene number to 1 (first chart)
+    let currentScene = 1;
+
+    // Attach a click event listener to the "Next" button
+    d3.select("#next-button").on("click", function() {
+      // Depending on the current scene, call the appropriate function to draw the next chart
+      if (currentScene === 1) {
+        // Code to draw the first chart
+        drawChart1(data1); // Pass the data for the first chart
+      } else if (currentScene === 2) {
+        // Code to draw the second chart
+        drawChart2(data); // Pass the data for the second chart
+      } else if (currentScene === 3) {
+        drawChart3(data); // Pass the data for the third chart
+      } else {
+        drawChart4(data); // Pass the data for the third chart
+      }
+
+      // Increment the current scene number
+      currentScene = (currentScene % 3) + 1;
+    });
+
+    // Fetch data from the CSV file and draw the initial chart
+    d3.csv(dataUrl, function(d) {
+      return {
+        Year: d3.timeParse('%Y')(d.Year.toString()),
+        'HR/G': +d['HR/G']
+      };
+    }).then(function(data) {
+      drawChart1(data); // Draw the initial chart with the first set of data
     });
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
