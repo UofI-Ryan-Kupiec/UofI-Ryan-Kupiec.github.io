@@ -13,8 +13,8 @@
   <button id="next-button">Next</button>
 
   <script>
-    const svgWidth = window.innerWidth * 0.9;
-    const svgHeight = window.innerHeight * 0.9;
+    const svgWidth = window.innerWidth * 0.8;
+    const svgHeight = window.innerHeight * 0.8;
     const margin = { top: 50, right: 50, bottom: 70, left: 70 };
     const width = svgWidth - margin.left - margin.right;
     const height = svgHeight - margin.top - margin.bottom;
@@ -33,9 +33,6 @@
       const yScale = d3.scaleLinear()
         .domain(d3.extent(data, function(d) { return d['HR/G']; }))
         .range([height - margin.bottom, margin.top]);
-
-      const xAxis = d3.axisBottom(xScale).ticks(d3.timeYear.every(10));
-      const yAxis = d3.axisLeft(yScale);
 
       svg.append("g")
         .attr("transform", `translate(0, ${height - margin.bottom})`)
