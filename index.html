@@ -9,8 +9,6 @@
 <body>
   <div id="scatterplot-container">
     <svg class="chart" width="100%" height="100%" viewBox="0 0 800 600"></svg>
-    <svg class="chart" width="100%" height="100%" viewBox="0 0 800 600" style="display: none;"></svg>
-    <svg class="chart" width="100%" height="100%" viewBox="0 0 800 600" style="display: none;"></svg>
   </div>
   <button id="next-button">Next</button>
 
@@ -23,7 +21,10 @@
     const dataUrl = "https://raw.githubusercontent.com/UofI-Ryan-Kupiec/UofI-Ryan-Kupiec.github.io/main/Baseball_Hitting_Historic_Data.csv";
 
     function drawChart1(data) {
-      const svg = d3.select("#scatterplot-container");
+      const svg = d3.select("#scatterplot-container svg");
+      // Clear the contents of the SVG container
+      svg.html("");
+
       // Setup scales and axes for the first chart
       const xScale = d3.scaleTime()
         .domain(d3.extent(data, function(d) { return d.Year; }))
@@ -110,7 +111,7 @@
         .attr("opacity", 0.7);
     }
 
-    function drawChart2(data) {
+function drawChart2(data) {
       const svg = d3.select("#scatterplot-container");
       const xScale = d3.scaleTime()
         .domain(d3.extent(data, function(d) { return d.Year; }))
@@ -162,7 +163,10 @@
     }
 
     function drawChart3(data) {
-      const svg = d3.select("#scatterplot-container svg:nth-child(3)");
+      const svg = d3.select("#scatterplot-container svg");
+      // Clear the contents of the SVG container
+      svg.html("");
+
       // Setup scales and axes for the third chart
       // Your code to draw the third chart here
     }
@@ -172,23 +176,24 @@
 
     // Attach a click event listener to the "Next" button
     d3.select("#next-button").on("click", function() {
-      // Remove the current chart's SVG
-      d3.selectAll("#scatterplot-container svg").remove();
-
-      // Depending on the current scene, call the appropriate function to draw the next chart
-      if (currentScene === 1) {
-        // Code to draw the first chart
-        drawChart1(data); // Pass the data for the first chart
-      } else if (currentScene === 2) {
-        // Code to draw the second chart
-        drawChart2(data); // Pass the data for the second chart
-      } else if (currentScene === 3) {
-        // Code to draw the third chart
-        drawChart3(data); // Pass the data for the third chart
-      }
-
       // Increment the current scene number
       currentScene = (currentScene % 3) + 1;
+
+      // Fetch data from the CSV file and draw the appropriate chart
+      d3.csv(dataUrl, function(d) {
+        return {
+          Year: d3.timeParse('%Y')(d.Year.toString()),
+          'HR/G': +d['HR/G']
+        };
+      }).then(function(data) {
+        if (currentScene === 1) {
+          drawChart1(data); // Draw the first chart
+        } else if (currentScene === 2) {
+          drawChart2(data); // Draw the second chart
+        } else if (currentScene === 3) {
+          drawChart3(data); // Draw the third chart
+        }
+      });
     });
 
     // Fetch data from the CSV file and draw the initial chart
@@ -203,19 +208,5 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
