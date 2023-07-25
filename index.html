@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Baseball HR/G Scatter Plot</title>
+  <title>Baseball HR/G and BA Scatter Plots</title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
@@ -111,11 +111,12 @@
         .attr("opacity", 0.7);
     }
 
-function drawChart2(data) {
+    function drawChart2(data) {
       const svg = d3.select("#scatterplot-container svg");
       // Clear the contents of the SVG container
       svg.html("");
-  
+
+      // Setup scales and axes for the second chart
       const xScale = d3.scaleTime()
         .domain(d3.extent(data, function(d) { return d.Year; }))
         .range([margin.left, width - margin.right]);
@@ -183,7 +184,8 @@ function drawChart2(data) {
       d3.csv(dataUrl, function(d) {
         return {
           Year: d3.timeParse('%Y')(d.Year.toString()),
-          'HR/G': +d['HR/G']
+          'HR/G': +d['HR/G'],
+          'BA': +d['BA'] // Add the 'BA' (Batting Average) data parsing here
         };
       }).then(function(data) {
         if (currentScene === 1) {
@@ -199,7 +201,8 @@ function drawChart2(data) {
     d3.csv(dataUrl, function(d) {
       return {
         Year: d3.timeParse('%Y')(d.Year.toString()),
-        'HR/G': +d['HR/G']
+        'HR/G': +d['HR/G'],
+        'BA': +d['BA'] // Add the 'BA' (Batting Average) data parsing here
       };
     }).then(function(data) {
       drawChart1(data); // Draw the initial chart with the first set of data
@@ -207,5 +210,3 @@ function drawChart2(data) {
   </script>
 </body>
 </html>
-
-
