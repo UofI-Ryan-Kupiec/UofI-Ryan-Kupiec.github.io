@@ -34,12 +34,12 @@
         .domain(d3.extent(data, function(d) { return d['HR/G']; }))
         .range([height - margin.bottom, margin.top]);
 
-      const xAxis = d3.axisBottom(xScale).ticks(d3.timeYear.every(5));
+      const xAxis = d3.axisBottom(xScale).ticks(d3.timeYear.every(10));
       const yAxis = d3.axisLeft(yScale);
 
       svg.append("g")
         .attr("transform", `translate(0, ${height - margin.bottom})`)
-        .call(d3.axisBottom(xScale).ticks(d3.timeYear.every(5)));
+        .call(d3.axisBottom(xScale).ticks(d3.timeYear.every(10)));
 
       svg.append("g")
         .attr("transform", `translate(${margin.left}, 0)`)
