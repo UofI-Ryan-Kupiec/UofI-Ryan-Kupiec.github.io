@@ -24,7 +24,6 @@
     const dataUrl = "https://raw.githubusercontent.com/UofI-Ryan-Kupiec/UofI-Ryan-Kupiec.github.io/main/Baseball_Hitting_Historic_Data.csv";
 
     function drawChart1(data) {
-      const svg = d3.select("#chart1");
       
       // Setup scales and axes for the first chart
       const xScale = d3.scaleTime()
@@ -113,8 +112,6 @@
     }
 
     function drawChart2(data) {
-      const svg = d3.select("#chart2");
-      
       // Setup scales and axes for the first chart
       const xScale = d3.scaleTime()
         .domain(d3.extent(data, function(d) { return d.Year; }))
@@ -166,8 +163,6 @@
     }
 
     function drawChart3(data) {
-      const svg = d3.select("#chart3");
-      
       // Setup scales and axes for the third chart
       const xScale = d3.scaleLinear()
         .domain(d3.extent(data, function(d) { return d.SomeOtherXData; }))
@@ -189,6 +184,8 @@
 
     // Attach a click event listener to the "Next" button
     d3.select("#next-button").on("click", function() {
+       d3.select("#scatterplot-container svg").remove();
+      
       // Depending on the current scene, call the appropriate function to draw the next chart
       if (currentScene === 1) {
         // Code to draw the first chart
