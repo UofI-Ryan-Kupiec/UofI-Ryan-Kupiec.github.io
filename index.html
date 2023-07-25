@@ -20,14 +20,10 @@
     const margin = { top: 50, right: 50, bottom: 70, left: 70 };
     const width = svgWidth - margin.left - margin.right;
     const height = svgHeight - margin.top - margin.bottom;
-    const charts = d3.selectAll('.chart');
     const dataUrl = "https://raw.githubusercontent.com/UofI-Ryan-Kupiec/UofI-Ryan-Kupiec.github.io/main/Baseball_Hitting_Historic_Data.csv";
 
     function drawChart1(data) {
-        const svg = d3.select("#scatterplot-container")
-          .append("svg")
-          .attr("width", svgWidth)
-          .attr("height", svgHeight);
+      const svg = d3.select("#scatterplot-container svg:nth-child(1)");
       // Setup scales and axes for the first chart
       const xScale = d3.scaleTime()
         .domain(d3.extent(data, function(d) { return d.Year; }))
@@ -115,11 +111,7 @@
     }
 
     function drawChart2(data) {
-      const svg = d3.select("#scatterplot-container")
-        .append("svg")
-        .attr("width", svgWidth)
-        .attr("height", svgHeight);
-      // Setup scales and axes for the first chart
+      const svg = d3.select("#scatterplot-container svg:nth-child(2)");
       const xScale = d3.scaleTime()
         .domain(d3.extent(data, function(d) { return d.Year; }))
         .range([margin.left, width - margin.right]);
@@ -170,19 +162,8 @@
     }
 
     function drawChart3(data) {
+      const svg = d3.select("#scatterplot-container svg:nth-child(3)");
       // Setup scales and axes for the third chart
-      const xScale = d3.scaleLinear()
-        .domain(d3.extent(data, function(d) { return d.SomeOtherXData; }))
-        .range([margin.left, width - margin.right]);
-
-      const yScale = d3.scaleLinear()
-        .domain(d3.extent(data, function(d) { return d.SomeOtherYData; }))
-        .range([height - margin.bottom, margin.top]);
-
-      const xAxis = d3.axisBottom(xScale);
-      const yAxis = d3.axisLeft(yScale);
-
-      // Draw the third chart using the scales and axes
       // Your code to draw the third chart here
     }
 
@@ -191,8 +172,9 @@
 
     // Attach a click event listener to the "Next" button
     d3.select("#next-button").on("click", function() {
-       d3.select("#scatterplot-container svg").remove();
-      
+      // Remove the current chart's SVG
+      d3.selectAll("#scatterplot-container svg").remove();
+
       // Depending on the current scene, call the appropriate function to draw the next chart
       if (currentScene === 1) {
         // Code to draw the first chart
@@ -201,9 +183,8 @@
         // Code to draw the second chart
         drawChart2(data); // Pass the data for the second chart
       } else if (currentScene === 3) {
+        // Code to draw the third chart
         drawChart3(data); // Pass the data for the third chart
-      } else {
-        drawChart4(data); // Pass the data for the third chart
       }
 
       // Increment the current scene number
@@ -222,6 +203,14 @@
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
 
 
 
