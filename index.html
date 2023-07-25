@@ -171,9 +171,13 @@
         };
       }).then(function(data) {
         if (currentScene === 1) {
-          drawLineChart1(data); // Draw the first chart
+          const filteredData = filterDataByYearRange(data, 2000, 2022);
+          drawLineChart1(filteredData);
+          // drawLineChart1(data); // Draw the first chart
         } else if (currentScene === 2) {
-          drawLineChart2(data); // Draw the second chart
+          const filteredData = filterDataByYearRange(data, 2000, 2022);
+          drawLineChart2(filteredData);
+          // drawLineChart2(data); // Draw the second chart
         }
       });
     });
