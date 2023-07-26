@@ -98,20 +98,31 @@
       const dataPoints = data.filter(d => d.Year >= highlightStart && d.Year <= highlightEnd);
       const yPos = yScale(d3.max(dataPoints, d => d['HR/G']));
 
-      annotationGroup.append("rect")
-        .attr("x", xScale(highlightStart))
-        .attr("y", margin.top) // yPos
-        .attr("width", xScale(highlightEnd) - xScale(highlightStart))
-        .attr("height", height - margin.bottom) //  - yPos
-        .attr("fill", "yellow")
-        .attr("opacity", 0.3);
+    const annotations = [{
+        type: d3.annotationCalloutRect,
+        note: {
+          title: "Highlighted Years",
+          label: text
+        },
+        x: xScale(highlightStart),
+        y: margin.top,
+        dx: xScale(end) - xScale(highlightStart),
+        dy: height - margin.top,
+        color: "#E8336D",
+        subject: {
+          radius: 5
+        }
+      }];
 
-    annotationGroup.append("text")
-      .attr("x", (xScale(highlightStart) + xScale(highlightEnd)) / 2)
-      .attr("y", yPos - 30) // Adjust the y position to place the text above the arrow
-      .attr("text-anchor", "middle")
-      .style("font-size", "16px")
-      .text("Years 2000-2010: Explanation for these highlighted years");
+      const makeAnnotations = d3.annotation()
+        .type(d3.annotationLabel)
+        .annotations(annotations);
+
+      svg.append("g")
+        .attr("class", "annotation-group")
+        .call(makeAnnotations);
+
+      
     }
 
     function drawLineChart2(data) {
