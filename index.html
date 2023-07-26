@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -59,16 +59,6 @@
         .attr("stroke-width", 2)
         .attr("d", line);
 
-      svg.selectAll("circle")
-        .data(data)
-        .enter()
-        .append("circle")
-        .attr("cx", (d) => xScale(d.Year))
-        .attr("cy", (d) => yScale(d['HR/G']))
-        .attr("r", 5)
-        .attr("fill", "blue")
-        .attr("opacity", 0.5);
-
       svg.append("text")
         .attr("x", width / 2)
         .attr("y", height - margin.bottom / 2)
@@ -92,7 +82,7 @@
       const highlightStart = new Date(2000, 0, 1);
       const highlightEnd = new Date(2010, 0, 1);
     
-      const annotationGroup = svg.append("g") // Append the annotationGroup to the chartGroup
+      const annotationGroup = svg.append("g") 
         .attr("class", "annotation")
         .style("pointer-events", "none");
     
@@ -116,6 +106,35 @@
     }
 
     function drawLineChart2(data) {
+      const svg = d3.select("#linechart-container svg");
+      
+      const highlightStart = new Date(2011, 0, 1);
+      const highlightEnd = new Date(2020, 0, 1);
+    
+      const annotationGroup = svg.append("g") 
+        .attr("class", "annotation")
+        .style("pointer-events", "none");
+    
+      const dataPoints = data.filter(d => d.Year >= highlightStart && d.Year <= highlightEnd);
+      const yPos = yScale(d3.max(dataPoints, d => d['HR/G']));
+
+      annotationGroup.append("rect")
+        .attr("x", xScale(highlightStart))
+        .attr("y", yPos)
+        .attr("width", xScale(highlightEnd) - xScale(highlightStart))
+        .attr("height", height - margin.bottom) //  - yPos
+        .attr("fill", "yellow")
+        .attr("opacity", 0.3);
+
+      annotationGroup.append("text")
+        .attr("x", (xScale(highlightStart) + xScale(highlightEnd)) / 2)
+        .attr("y", yPos - 20)
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .text("Years 2000-2010: Explanation for these highlighted years");
+    }
+    
+    function drawLineChart3(data) {
       const svg = d3.select("#linechart-container svg");
       // Clear the contents of the SVG container
       svg.html("");
@@ -184,8 +203,9 @@
 
     // Attach a click event listener to the "Next" button
     d3.select("#next-button").on("click", function() {
+      svg.selectAll(".annotation").remove();
       // Increment the current scene number
-      currentScene = (currentScene % 2) + 1;
+      currentScene = (currentScene % 3) + 1;
 
       // Fetch data from the CSV file and draw the appropriate chart
       d3.csv(dataUrl, function(d) {
@@ -199,6 +219,8 @@
           drawLineChart1(data); // Draw the first chart
         } else if (currentScene === 2) {
           drawLineChart2(data); // Draw the second chart
+        } else if (currentScene === 3) {
+          drawLineChart3(data); // Draw the second chart
         }
       });
     });
