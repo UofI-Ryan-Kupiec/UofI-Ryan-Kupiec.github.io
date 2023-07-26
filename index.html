@@ -268,7 +268,6 @@
 
     // Attach a click event listener to the "Next" button
     d3.select("#next-button").on("click", function() {
-      svg.selectAll(".annotation").remove();
       // Increment the current scene number
       currentScene = (currentScene % 3) + 1;
 
