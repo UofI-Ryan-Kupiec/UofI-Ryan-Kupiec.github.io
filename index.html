@@ -38,9 +38,7 @@
     function drawLineChart1(data) {
       d3.select("#context-section").remove();
 
-      const contextSection = d3.select("#linechart-container")
-        .append("div")
-        .attr("id", "context-section");
+      const contextSection = d3.select("#context-section")
 
       contextSection.append("h1").text("Home Runs per Game (HR/G) Line Chart");
       contextSection.append("p").text("This chart shows the trends of Home Runs per Game (HR/G) in baseball over time.");
@@ -124,6 +122,13 @@
     }
 
     function drawLineChart2(data) {
+      d3.select("#context-section").remove();
+
+      const contextSection = d3.select("#context-section")
+
+      contextSection.append("h1").text("Home Runs ");
+      contextSection.append("p").text("This chart ");
+
       const svg = d3.select("#linechart-container svg");
       // Clear the contents of the SVG container
       svg.html("");
