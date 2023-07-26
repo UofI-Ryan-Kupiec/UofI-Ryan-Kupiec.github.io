@@ -90,38 +90,30 @@
         .style("font-size", "1.5em")
         .text("Home Runs per Game over Time");
 
-      // Add annotations
-      const annotationGroup = chartGroup.append("g")
+     const highlightStart = new Date(2000, 0, 1);
+      const highlightEnd = new Date(2010, 0, 1);
+
+      const annotationGroup = svg.append("g")
         .attr("class", "annotation")
         .style("pointer-events", "none");
 
-      annotationsChart1[0].years.forEach(year => {
-        const dataPoint = data.find(d => d.Year.getFullYear() === year);
-        if (dataPoint) {
-          annotationGroup.append("line")
-            .attr("x1", xScale(dataPoint.Year))
-            .attr("y1", yScale(dataPoint['HR/G']))
-            .attr("x2", xScale(dataPoint.Year))
-            .attr("y2", yScale(d3.max(data, e => e['HR/G'])))
-            .attr("stroke", "red")
-            .attr("stroke-width", 2);
+      const dataPoints = data.filter(d => d.Year >= highlightStart && d.Year <= highlightEnd);
+      const yPos = yScale(d3.max(dataPoints, d => d['HR/G']));
 
-          annotationGroup.append("circle")
-            .attr("cx", xScale(dataPoint.Year))
-            .attr("cy", yScale(dataPoint['HR/G']))
-            .attr("r", 5)
-            .attr("fill", "red")
-            .attr("opacity", 1);
+      annotationGroup.append("rect")
+        .attr("x", xScale(highlightStart))
+        .attr("y", yPos)
+        .attr("width", xScale(highlightEnd) - xScale(highlightStart))
+        .attr("height", height - margin.bottom - yPos)
+        .attr("fill", "yellow")
+        .attr("opacity", 0.3);
 
-        }
-      });
-
-          annotationGroup.append("text")
-            .attr("x", xScale(dataPoint.Year) + 10)
-            .attr("y", yScale(d3.max(data, e => e['HR/G'])) - 10)
-            .attr("text-anchor", "start")
-            .style("font-size", "12px")
-            .text(annotationsChart1[0].text);
+      annotationGroup.append("text")
+        .attr("x", (xScale(highlightStart) + xScale(highlightEnd)) / 2)
+        .attr("y", yPos - 20)
+        .attr("text-anchor", "middle")
+        .style("font-size", "12px")
+        .text("Years 2000-2010: Explanation for these highlighted years");
     }
 
     
