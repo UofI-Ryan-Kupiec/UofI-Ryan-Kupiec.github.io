@@ -26,10 +26,6 @@
       .attr("width", svgWidth)
       .attr("height", svgHeight);
 
-      const annotationsChart1 = [
-      { years: [2000, 2004, 2008, 2012], text: "Years 2000-2014: Explanation for these highlighted years" }
-    ];
-
     function drawLineChart1(data) {
       const xScale = d3.scaleTime()
         .domain(d3.extent(data, function(d) { return d.Year; }))
@@ -89,31 +85,26 @@
         .attr("text-anchor", "middle")
         .style("font-size", "1.5em")
         .text("Home Runs per Game over Time");
+      
+      //const annotationGroup = svg.append("g")
+        //.attr("class", "annotation")
+        //.style("pointer-events", "none");
 
-     const highlightStart = new Date(2000, 0, 1);
+      //const dataPoints = data.filter(d => d.Year >= highlightStart && d.Year <= highlightEnd);
+      //const yPos = yScale(d3.max(dataPoints, d => d['HR/G']));
+
+      const highlightStart = new Date(2000, 0, 1);
       const highlightEnd = new Date(2010, 0, 1);
 
-      const annotationGroup = svg.append("g")
-        .attr("class", "annotation")
-        .style("pointer-events", "none");
-
       const dataPoints = data.filter(d => d.Year >= highlightStart && d.Year <= highlightEnd);
-      const yPos = yScale(d3.max(dataPoints, d => d['HR/G']));
-
-      annotationGroup.append("rect")
-        .attr("x", xScale(highlightStart))
-        .attr("y", yPos)
-        .attr("width", xScale(highlightEnd) - xScale(highlightStart))
-        .attr("height", height - margin.bottom - yPos)
-        .attr("fill", "yellow")
-        .attr("opacity", 0.3);
-
-      annotationGroup.append("text")
-        .attr("x", (xScale(highlightStart) + xScale(highlightEnd)) / 2)
-        .attr("y", yPos - 20)
-        .attr("text-anchor", "middle")
-        .style("font-size", "12px")
-        .text("Years 2000-2010: Explanation for these highlighted years");
+      
+      svg.append("path")
+        .datum(dataPoints)
+        .attr("fill", "none")
+        .attr("stroke", "red")
+        .attr("stroke-width", 2)
+        .attr("stroke-dasharray", "5, 5") // Add a dashed pattern to the line
+        .attr("d", line);
     }
 
     
