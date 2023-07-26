@@ -79,7 +79,7 @@
   const highlightStart = new Date(2000, 0, 1);
   const highlightEnd = new Date(2010, 0, 1);
 
-  const annotationGroup = svg.append("g")
+  const annotationGroup = chartGroup.append("g") // Append the annotationGroup to the chartGroup
     .attr("class", "annotation")
     .style("pointer-events", "none");
 
@@ -88,9 +88,9 @@
 
   annotationGroup.append("rect")
     .attr("x", xScale(highlightStart))
-    .attr("y", yScale.range()[0]) // Adjust the positioning to touch the x-axis
+    .attr("y", yScale.range()[0]) // Align the top of the rectangle with the y-axis
     .attr("width", xScale(highlightEnd) - xScale(highlightStart))
-    .attr("height", yScale.range()[1] - yScale.range()[0]) // Adjust the height to touch the x-axis
+    .attr("height", yScale.range()[1] - yScale.range()[0]) // Use the full height of the chart
     .attr("fill", "yellow")
     .attr("opacity", 0.3);
 
