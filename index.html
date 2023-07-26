@@ -15,7 +15,7 @@
       between the two line charts and explore the data for different years.
     </p>
   </div>
-  
+  <div id="context-section"></div>
   <div id="linechart-container"></div>
   <button id="next-button">Next</button>
 
@@ -36,6 +36,15 @@
       .attr("height", svgHeight);
     
     function drawLineChart1(data) {
+      d3.select("#context-section").remove();
+
+      const contextSection = d3.select("#linechart-container")
+        .append("div")
+        .attr("id", "context-section");
+
+      contextSection.append("h1").text("Home Runs per Game (HR/G) Line Chart");
+      contextSection.append("p").text("This chart shows the trends of Home Runs per Game (HR/G) in baseball over time.");
+
       const svg = d3.select("#linechart-container svg");
       // Clear the contents of the SVG container
       svg.html("");
