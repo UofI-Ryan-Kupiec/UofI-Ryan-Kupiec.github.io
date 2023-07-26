@@ -42,8 +42,7 @@
       const chartGroup = svg.append("g")
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-      chartGroup.append("g")
-        .call(d3.axisLeft(yScale));
+        chartGroup.append("g").call(d3.axisLeft(yScale)).attr("transform", `translate(0, 0)`);
 
       chartGroup.append("g")
         .attr("transform", `translate(0, ${height - margin.bottom})`)
