@@ -49,15 +49,15 @@
         .attr("stroke-width", 2)
         .attr("d", line);
 
-      chartGroup.selectAll("circle")
-        .data(data)
-        .enter()
-        .append("circle")
-        .attr("cx", (d) => xScale(d.Year))
-        .attr("cy", (d) => yScale(d['HR/G']))
-        .attr("r", 5)
-        .attr("fill", "blue")
-        .attr("opacity", 0.5);
+      //chartGroup.selectAll("circle")
+        //.data(data)
+        //.enter()
+        //.append("circle")
+        //.attr("cx", (d) => xScale(d.Year))
+        //.attr("cy", (d) => yScale(d['HR/G']))
+        //.attr("r", 5)
+        //.attr("fill", "blue")
+        //.attr("opacity", 0.5);
 
       chartGroup.append("g")
         .attr("transform", `translate(0, ${height - margin.bottom})`)
