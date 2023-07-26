@@ -44,7 +44,7 @@
       contextSection.append("p").text("This chart shows the trends of Home Runs per Game (HR/G) in baseball over time.");
 
       const svg = d3.select("#linechart-container svg");
-      // Clear the contents of the SVG container
+    
       svg.html("");
 
       // Setup scales and axes for the first chart
@@ -122,8 +122,8 @@
     }
 
     function drawLineChart2(data) {
-      d3.select("#context-section").remove();
-
+      d3.select("#context-section").html("");
+      
       const contextSection = d3.select("#context-section")
 
       contextSection.append("h1").text("Home Runs ");
