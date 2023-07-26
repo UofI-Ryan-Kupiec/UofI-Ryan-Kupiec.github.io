@@ -25,6 +25,10 @@
       .append("svg")
       .attr("width", svgWidth)
       .attr("height", svgHeight);
+
+    const annotationsChart1 = [
+      { years: [2000, 2004, 2008, 2012], text: "Years 2000-2014: Explanation for these highlighted years" }
+    ];
     
     function drawLineChart1(data, annotationIndex) {
       const svg = d3.select("#linechart-container svg");
@@ -89,6 +93,42 @@
         .style("font-size", "1.5em")
         .text("Home Runs per Game over Time");
 
+      annotations.forEach(annotation => {
+        const annotationGroup = chartGroup.append("g")
+          .attr("class", "annotation")
+          .style("pointer-events", "none");
+
+        annotationGroup.selectAll("line")
+          .data(annotation.years)
+          .enter()
+          .append("line")
+          .attr("x1", year => xScale(new Date(year, 0, 1)))
+          .attr("y1", yScale(d3.max(data, e => e['HR/G'])))
+          .attr("x2", year => xScale(new Date(year, 0, 1)))
+          .attr("y2", yScale(d3.max(data, e => e['HR/G'])))
+          .attr("stroke", "black")
+          .attr("stroke-width", 2);
+
+        annotationGroup.selectAll("circle")
+          .data(annotation.years)
+          .enter()
+          .append("circle")
+          .attr("cx", year => xScale(new Date(year, 0, 1)))
+          .attr("cy", yScale(d3.max(data, e => e['HR/G'])))
+          .attr("r", 5)
+          .attr("fill", "red")
+          .attr("opacity", 1);
+
+        annotationGroup.selectAll("text")
+          .data(annotation.years)
+          .enter()
+          .append("text")
+          .attr("x", year => xScale(new Date(year, 0, 1)) + 10)
+          .attr("y", yScale(d3.max(data, e => e['HR/G'])) - 10)
+          .attr("text-anchor", "start")
+          .style("font-size", "12px")
+          .text(annotation.text);
+      });
     }
 
     function drawLineChart2(data, annotationIndex) {
@@ -160,6 +200,8 @@
 
     // Attach a click event listener to the "Next" button
     d3.select("#next-button").on("click", function() {
+      // svg.selectAll(".annotation").remove();
+      
       // Increment the current scene number
       currentScene = (currentScene % 2) + 1;
 
