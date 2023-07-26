@@ -26,7 +26,7 @@
       .attr("width", svgWidth)
       .attr("height", svgHeight);
 
-    function drawLineChart1(data) {
+  function drawLineChart1(data) {
   const xScale = d3.scaleTime()
     .domain(d3.extent(data, function(d) { return d.Year; }))
     .range([margin.left, width - margin.right]);
@@ -88,9 +88,9 @@
 
   annotationGroup.append("rect")
     .attr("x", xScale(highlightStart))
-    .attr("y", margin.top) // Adjust the positioning to be within the chart area
+    .attr("y", yScale.range()[0]) // Adjust the positioning to touch the x-axis
     .attr("width", xScale(highlightEnd) - xScale(highlightStart))
-    .attr("height", height - margin.top - margin.bottom) // Adjust the height to fit within the chart area
+    .attr("height", yScale.range()[1] - yScale.range()[0]) // Adjust the height to touch the x-axis
     .attr("fill", "yellow")
     .attr("opacity", 0.3);
 
