@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Baseball HR/G and BA Line Charts</title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://unpkg.com/d3-annotation"></script>
 </head>
 <body>
    <div id="context-section">
@@ -107,19 +108,11 @@
 
       annotationGroup.append("rect")
         .attr("x", xScale(highlightStart))
-        .attr("y", yPos)
+        .attr("y", height) // yPos
         .attr("width", xScale(highlightEnd) - xScale(highlightStart))
         .attr("height", height - margin.bottom - yPos) //   
         .attr("fill", "yellow")
         .attr("opacity", 0.3);
-
-    const arrowWidth = 10; // Adjust the size of the arrowhead
-    annotationGroup.append("polygon")
-      .attr("points", `${xScale(highlightStart) + (xScale(highlightEnd) - xScale(highlightStart)) / 2},${height - margin.bottom} 
-                         ${xScale(highlightStart) + (xScale(highlightEnd) - xScale(highlightStart)) / 2 - arrowWidth / 2},${height - margin.bottom + arrowWidth} 
-                         ${xScale(highlightStart) + (xScale(highlightEnd) - xScale(highlightStart)) / 2 + arrowWidth / 2},${height - margin.bottom + arrowWidth}`)
-      .attr("fill", "yellow")
-      .attr("opacity", 0.3);
 
     annotationGroup.append("text")
       .attr("x", (xScale(highlightStart) + xScale(highlightEnd)) / 2)
