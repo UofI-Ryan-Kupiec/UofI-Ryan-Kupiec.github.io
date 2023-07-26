@@ -26,16 +26,11 @@
       .attr("width", svgWidth)
       .attr("height", svgHeight);
 
-    const annotationsChart1 = [
+      const annotationsChart1 = [
       { years: [2000, 2004, 2008, 2012], text: "Years 2000-2014: Explanation for these highlighted years" }
     ];
-    
-    function drawLineChart1(data, annotationIndex) {
-      const svg = d3.select("#linechart-container svg");
-      // Clear the contents of the SVG container
-      svg.html("");
 
-      // Setup scales and axes for the first chart
+    function drawLineChart1(data) {
       const xScale = d3.scaleTime()
         .domain(d3.extent(data, function(d) { return d.Year; }))
         .range([margin.left, width - margin.right]);
@@ -44,26 +39,21 @@
         .domain(d3.extent(data, function(d) { return d['HR/G']; }))
         .range([height - margin.bottom, margin.top]);
 
-      svg.append("g")
-        .attr("transform", `translate(0, ${height - margin.bottom})`)
-        .call(d3.axisBottom(xScale).ticks(d3.timeYear.every(10)));
-
-      svg.append("g")
-        .attr("transform", `translate(${margin.left}, 0)`)
-        .call(d3.axisLeft(yScale));
-
       const line = d3.line()
         .x(d => xScale(d.Year))
         .y(d => yScale(d['HR/G']));
 
-      svg.append("path")
+      const chartGroup = svg.append("g")
+        .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+      chartGroup.append("path")
         .datum(data)
         .attr("fill", "none")
         .attr("stroke", "blue")
         .attr("stroke-width", 2)
         .attr("d", line);
 
-      svg.selectAll("circle")
+      chartGroup.selectAll("circle")
         .data(data)
         .enter()
         .append("circle")
@@ -73,64 +63,67 @@
         .attr("fill", "blue")
         .attr("opacity", 0.5);
 
-      svg.append("text")
+      chartGroup.append("g")
+        .attr("transform", `translate(0, ${height - margin.bottom})`)
+        .call(d3.axisBottom(xScale).ticks(d3.timeYear.every(10)));
+
+      chartGroup.append("g")
+        .call(d3.axisLeft(yScale));
+
+      chartGroup.append("text")
         .attr("x", width / 2)
         .attr("y", height - margin.bottom / 2)
         .attr("text-anchor", "middle")
         .text("Year");
 
-      svg.append("text")
+      chartGroup.append("text")
         .attr("transform", "rotate(-90)")
         .attr("x", -height / 2)
         .attr("y", margin.left / 2)
         .attr("text-anchor", "middle")
         .text("HR/G (Home Runs per Game)");
 
-      svg.append("text")
+      chartGroup.append("text")
         .attr("x", width / 2)
         .attr("y", margin.top / 2)
         .attr("text-anchor", "middle")
         .style("font-size", "1.5em")
         .text("Home Runs per Game over Time");
 
-      annotations.forEach(annotation => {
-        const annotationGroup = chartGroup.append("g")
-          .attr("class", "annotation")
-          .style("pointer-events", "none");
+      // Add annotations
+      const annotationGroup = chartGroup.append("g")
+        .attr("class", "annotation")
+        .style("pointer-events", "none");
 
-        annotationGroup.selectAll("line")
-          .data(annotation.years)
-          .enter()
-          .append("line")
-          .attr("x1", year => xScale(new Date(year, 0, 1)))
-          .attr("y1", yScale(d3.max(data, e => e['HR/G'])))
-          .attr("x2", year => xScale(new Date(year, 0, 1)))
-          .attr("y2", yScale(d3.max(data, e => e['HR/G'])))
-          .attr("stroke", "black")
-          .attr("stroke-width", 2);
+      annotationsChart1[0].years.forEach(year => {
+        const dataPoint = data.find(d => d.Year.getFullYear() === year);
+        if (dataPoint) {
+          annotationGroup.append("line")
+            .attr("x1", xScale(dataPoint.Year))
+            .attr("y1", yScale(dataPoint['HR/G']))
+            .attr("x2", xScale(dataPoint.Year))
+            .attr("y2", yScale(d3.max(data, e => e['HR/G'])))
+            .attr("stroke", "black")
+            .attr("stroke-width", 2);
 
-        annotationGroup.selectAll("circle")
-          .data(annotation.years)
-          .enter()
-          .append("circle")
-          .attr("cx", year => xScale(new Date(year, 0, 1)))
-          .attr("cy", yScale(d3.max(data, e => e['HR/G'])))
-          .attr("r", 5)
-          .attr("fill", "red")
-          .attr("opacity", 1);
+          annotationGroup.append("circle")
+            .attr("cx", xScale(dataPoint.Year))
+            .attr("cy", yScale(dataPoint['HR/G']))
+            .attr("r", 5)
+            .attr("fill", "red")
+            .attr("opacity", 1);
 
-        annotationGroup.selectAll("text")
-          .data(annotation.years)
-          .enter()
-          .append("text")
-          .attr("x", year => xScale(new Date(year, 0, 1)) + 10)
-          .attr("y", yScale(d3.max(data, e => e['HR/G'])) - 10)
-          .attr("text-anchor", "start")
-          .style("font-size", "12px")
-          .text(annotation.text);
+          annotationGroup.append("text")
+            .attr("x", xScale(dataPoint.Year) + 10)
+            .attr("y", yScale(d3.max(data, e => e['HR/G'])) - 10)
+            .attr("text-anchor", "start")
+            .style("font-size", "12px")
+            .text(annotationsChart1[0].text);
+        }
       });
     }
 
+    
     function drawLineChart2(data, annotationIndex) {
       const svg = d3.select("#linechart-container svg");
       // Clear the contents of the SVG container
