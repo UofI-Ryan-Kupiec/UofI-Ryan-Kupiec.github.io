@@ -92,7 +92,7 @@
       const highlightStart = new Date(2000, 0, 1);
       const highlightEnd = new Date(2010, 0, 1);
     
-      const annotationGroup = chartGroup.append("g") // Append the annotationGroup to the chartGroup
+      const annotationGroup = svg.append("g") // Append the annotationGroup to the chartGroup
         .attr("class", "annotation")
         .style("pointer-events", "none");
     
