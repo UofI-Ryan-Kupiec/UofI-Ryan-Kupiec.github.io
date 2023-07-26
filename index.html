@@ -49,16 +49,6 @@
         .attr("stroke-width", 2)
         .attr("d", line);
 
-      //chartGroup.selectAll("circle")
-        //.data(data)
-        //.enter()
-        //.append("circle")
-        //.attr("cx", (d) => xScale(d.Year))
-        //.attr("cy", (d) => yScale(d['HR/G']))
-        //.attr("r", 5)
-        //.attr("fill", "blue")
-        //.attr("opacity", 0.5);
-
       chartGroup.append("g")
         .attr("transform", `translate(0, ${height - margin.bottom})`)
         .call(d3.axisBottom(xScale).ticks(d3.timeYear.every(10)));
@@ -86,13 +76,6 @@
         .style("font-size", "1.5em")
         .text("Home Runs per Game over Time");
       
-      //const annotationGroup = svg.append("g")
-        //.attr("class", "annotation")
-        //.style("pointer-events", "none");
-
-      //const dataPoints = data.filter(d => d.Year >= highlightStart && d.Year <= highlightEnd);
-      //const yPos = yScale(d3.max(dataPoints, d => d['HR/G']));
-      // Highlight the years 2000 to 2010 with an annotation
       const highlightStart = new Date(2000, 0, 1);
       const highlightEnd = new Date(2010, 0, 1);
 
@@ -115,13 +98,13 @@
         .attr("x", (xScale(highlightStart) + xScale(highlightEnd)) / 2)
         .attr("y", yPos - 20)
         .attr("text-anchor", "middle")
-        .style("font-size", "12px")
+        .style("font-size", "16px")
         .text("Years 2000-2010: Explanation for these highlighted years");
     
     }
 
     
-    function drawLineChart2(data, annotationIndex) {
+    function drawLineChart3(data) {
       const svg = d3.select("#linechart-container svg");
       // Clear the contents of the SVG container
       svg.html("");
@@ -203,10 +186,12 @@
           'BA': +d['BA']
         };
       }).then(function(data) {
-        if (currentScene === 1) {
+        if (currentScene == 1) {
           drawLineChart1(data); // Draw the first chart
         } else if (currentScene === 2) {
           drawLineChart2(data); // Draw the second chart
+        } else if (currentScene === 3) {
+          drawLineChart3(data); // Draw the second chart
         }
       });
     });
