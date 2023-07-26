@@ -89,17 +89,17 @@
         .style("font-size", "1.5em")
         .text("Home Runs per Game over Time");
 
-  const highlightStart = new Date(2000, 0, 1);
-  const highlightEnd = new Date(2010, 0, 1);
+      const highlightStart = new Date(2000, 0, 1);
+      const highlightEnd = new Date(2010, 0, 1);
+    
+      const annotationGroup = chartGroup.append("g") // Append the annotationGroup to the chartGroup
+        .attr("class", "annotation")
+        .style("pointer-events", "none");
+    
+      const dataPoints = data.filter(d => d.Year >= highlightStart && d.Year <= highlightEnd);
+      const yPos = yScale(d3.max(dataPoints, d => d['HR/G']));
 
-  const annotationGroup = chartGroup.append("g") // Append the annotationGroup to the chartGroup
-    .attr("class", "annotation")
-    .style("pointer-events", "none");
-
-  const dataPoints = data.filter(d => d.Year >= highlightStart && d.Year <= highlightEnd);
-  const yPos = yScale(d3.max(dataPoints, d => d['HR/G']));
-
-        annotationGroup.append("rect")
+      annotationGroup.append("rect")
         .attr("x", xScale(highlightStart))
         .attr("y", yPos)
         .attr("width", xScale(highlightEnd) - xScale(highlightStart))
@@ -107,12 +107,12 @@
         .attr("fill", "yellow")
         .attr("opacity", 0.3);
 
-  annotationGroup.append("text")
-    .attr("x", (xScale(highlightStart) + xScale(highlightEnd)) / 2)
-    .attr("y", yPos - 20)
-    .attr("text-anchor", "middle")
-    .style("font-size", "16px")
-    .text("Years 2000-2010: Explanation for these highlighted years");
+      annotationGroup.append("text")
+        .attr("x", (xScale(highlightStart) + xScale(highlightEnd)) / 2)
+        .attr("y", yPos - 20)
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .text("Years 2000-2010: Explanation for these highlighted years");
     }
 
     function drawLineChart2(data) {
