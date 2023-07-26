@@ -108,7 +108,7 @@
 
       annotationGroup.append("rect")
         .attr("x", xScale(highlightStart))
-        .attr("y", height) // yPos
+        .attr("y", margin.top) // yPos
         .attr("width", xScale(highlightEnd) - xScale(highlightStart))
         .attr("height", height - margin.bottom - yPos) //   
         .attr("fill", "yellow")
