@@ -42,20 +42,20 @@
       const chartGroup = svg.append("g")
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
+      chartGroup.append("g")
+        .call(d3.axisLeft(yScale));
+
+      chartGroup.append("g")
+        .attr("transform", `translate(0, ${height - margin.bottom})`)
+        .call(d3.axisBottom(xScale).ticks(d3.timeYear.every(10)));
+
       chartGroup.append("path")
         .datum(data)
         .attr("fill", "none")
         .attr("stroke", "blue")
         .attr("stroke-width", 2)
         .attr("d", line);
-
-      chartGroup.append("g")
-        .attr("transform", `translate(0, ${height - margin.bottom})`)
-        .call(d3.axisBottom(xScale).ticks(d3.timeYear.every(10)));
-
-      chartGroup.append("g")
-        .call(d3.axisLeft(yScale));
-
+      
       chartGroup.append("text")
         .attr("x", width / 2)
         .attr("y", height - margin.bottom / 2)
