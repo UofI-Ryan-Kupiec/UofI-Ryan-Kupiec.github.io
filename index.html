@@ -103,7 +103,7 @@
             .attr("y1", yScale(dataPoint['HR/G']))
             .attr("x2", xScale(dataPoint.Year))
             .attr("y2", yScale(d3.max(data, e => e['HR/G'])))
-            .attr("stroke", "black")
+            .attr("stroke", "red")
             .attr("stroke-width", 2);
 
           annotationGroup.append("circle")
@@ -113,14 +113,15 @@
             .attr("fill", "red")
             .attr("opacity", 1);
 
+        }
+      });
+
           annotationGroup.append("text")
             .attr("x", xScale(dataPoint.Year) + 10)
             .attr("y", yScale(d3.max(data, e => e['HR/G'])) - 10)
             .attr("text-anchor", "start")
             .style("font-size", "12px")
             .text(annotationsChart1[0].text);
-        }
-      });
     }
 
     
