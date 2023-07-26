@@ -209,6 +209,7 @@
 
     // Initialize the scene number to 1 (first chart)
     let currentScene = 1;
+    let currentAnnotationIndex = 0;
 
     // Attach a click event listener to the "Next" button
     d3.select("#next-button").on("click", function() {
@@ -224,9 +225,9 @@
         };
       }).then(function(data) {
         if (currentScene === 1) {
-          drawLineChart1(data); // Draw the first chart
+          drawLineChart1(data, currentAnnotationIndex); // Draw the first chart
         } else if (currentScene === 2) {
-          drawLineChart2(data); // Draw the second chart
+          drawLineChart2(data, currentAnnotationIndex); // Draw the second chart
         }
       });
     });
@@ -239,7 +240,7 @@
         'BA': +d['BA']
       };
     }).then(function(data) {
-      drawLineChart1(data); // Draw the initial chart with the first set of data
+      drawLineChart1(data, currentAnnotationIndex); // Draw the initial chart with the first set of data
     });
   </script>
 </body>
