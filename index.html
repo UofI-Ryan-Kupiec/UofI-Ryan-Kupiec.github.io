@@ -25,8 +25,23 @@
       .append("svg")
       .attr("width", svgWidth)
       .attr("height", svgHeight);
+
+
+    const annotationsChart1 = [
+      { year: 1994, text: "1994: MLB strike-shortened season" },
+      { year: 1998, text: "1998: Mark McGwire and Sammy Sosa chase the single-season home run record" }
+    ];
     
-    function drawLineChart1(data) {
+    const annotationsChart2 = [
+      { year: 1998, text: "1998: Explanation for this highlighted year" },
+      { year: 2004, text: "2004: Explanation for this highlighted year" }
+    ];
+    
+    const annotationsChart3 = [
+      // Add annotations for chart 3 as needed
+    ];
+    
+    function drawLineChart1(data, annotationIndex) {
       const svg = d3.select("#linechart-container svg");
       // Clear the contents of the SVG container
       svg.html("");
@@ -88,9 +103,47 @@
         .attr("text-anchor", "middle")
         .style("font-size", "1.5em")
         .text("Home Runs per Game over Time");
+
+      if (annotationIndex >= 0 && annotationIndex < annotationsChart1.length) {
+        const annotation = annotationsChart1[annotationIndex];
+    
+        // Add the annotation elements here using 'annotation.year' and 'annotation.text'
+        const svg = d3.select("#linechart-container svg");
+    
+        // Append a group element for the annotation
+        const annotationGroup = svg.append("g")
+          .attr("class", "annotation")
+          .style("pointer-events", "none"); // Make sure the annotation does not intercept clicks on the chart
+    
+        // Add a line from the point on the chart to the annotation
+        annotationGroup.append("line")
+          .attr("x1", xScale(annotation.year))
+          .attr("y1", yScale(d3.max(data, e => e['HR/G'])))
+          .attr("x2", xScale(annotation.year))
+          .attr("y2", yScale(d3.max(data, e => e['HR/G'])))
+          .attr("stroke", "black");
+    
+        // Add a circle at the annotated point
+        annotationGroup.append("circle")
+          .attr("cx", xScale(annotation.year))
+          .attr("cy", yScale(d3.max(data, e => e['HR/G'])))
+          .attr("r", 5)
+          .attr("fill", "red");
+    
+        // Add the annotation text
+        annotationGroup.append("text")
+          .attr("x", xScale(annotation.year) + 10) // Adjust the position for the text
+          .attr("y", yScale(d3.max(data, e => e['HR/G'])) - 10) // Adjust the position for the text
+          .attr("text-anchor", "start")
+          .style("font-size", "12px")
+          .text(annotation.text);
+      } else {
+        // If all annotations for this chart are shown, move to the next chart
+        drawLineChart2(data, 0); // Start showing annotations for chart 2
+      }
     }
 
-    function drawLineChart2(data) {
+    function drawLineChart2(data, annotationIndex) {
       const svg = d3.select("#linechart-container svg");
       // Clear the contents of the SVG container
       svg.html("");
