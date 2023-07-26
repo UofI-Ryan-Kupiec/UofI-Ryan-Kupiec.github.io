@@ -7,6 +7,14 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
+   <div id="context-section">
+    <h1>Baseball Home Runs per Game (HR/G) and Batting Average (BA) Line Charts</h1>
+    <p>
+      This interactive data visualization showcases the trends of Home Runs per Game (HR/G)
+      and Batting Average (BA) in baseball over time. Use the "Next" button below to switch
+      between the two line charts and explore the data for different years.
+    </p>
+  </div>
   <div id="context-section"></div>
   <div id="linechart-container"></div>
   <button id="next-button">Next</button>
@@ -30,13 +38,15 @@
     function drawLineChart1(data) {
       d3.select("#context-section").remove();
 
-      const contextSection = d3.select("#context-section")
+      const contextSection = d3.select("#linechart-container")
+        .append("div")
+        .attr("id", "context-section");
 
-      contextSection.append("h1").text("Overview");
-      contextSection.append("p").text("Over the last 8 years baseball has seen a change unlike any other sport. Statistics (sabermetrics as they are called in baseball) has taken over the game. It has caused some major changes to the way the game is played and we are going to explore some of those today.");
+      contextSection.append("h1").text("Home Runs per Game (HR/G) Line Chart");
+      contextSection.append("p").text("This chart shows the trends of Home Runs per Game (HR/G) in baseball over time.");
 
       const svg = d3.select("#linechart-container svg");
-    
+      // Clear the contents of the SVG container
       svg.html("");
 
       // Setup scales and axes for the first chart
@@ -97,30 +107,23 @@
       const dataPoints = data.filter(d => d.Year >= highlightStart && d.Year <= highlightEnd);
       const yPos = yScale(d3.max(dataPoints, d => d['HR/G']));
 
-    annotationGroup.append("rect")
+      annotationGroup.append("rect")
         .attr("x", xScale(highlightStart))
-        .attr("y", margin.top) // yPos
+        .attr("y", yPos)
         .attr("width", xScale(highlightEnd) - xScale(highlightStart))
-        .attr("height", height - margin.bottom) //  - yPos
+        .attr("height", height - margin.bottom - yPos) //   
         .attr("fill", "yellow")
         .attr("opacity", 0.3);
 
-    annotationGroup.append("text")
-      .attr("x", (xScale(highlightStart) - 150) // + xScale(highlightEnd)) / 2
-      .attr("y", yPos - 30) // Adjust the y position to place the text above the arrow
-      .attr("text-anchor", "middle")
-      .style("font-size", "16px")
-      .text("Years 2000-2010: Explanation for these highlighted years");
+      annotationGroup.append("text")
+        .attr("x", (xScale(highlightStart) + xScale(highlightEnd)) / 2)
+        .attr("y", yPos - 20)
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .text("Years 2000-2010: Explanation for these highlighted years");
     }
 
     function drawLineChart2(data) {
-      d3.select("#context-section").html("");
-      
-      const contextSection = d3.select("#context-section")
-
-      contextSection.append("h1").text("Home Runs ");
-      contextSection.append("p").text("This chart ");
-
       const svg = d3.select("#linechart-container svg");
       // Clear the contents of the SVG container
       svg.html("");
@@ -268,6 +271,7 @@
 
     // Attach a click event listener to the "Next" button
     d3.select("#next-button").on("click", function() {
+      svg.selectAll(".annotation").remove();
       // Increment the current scene number
       currentScene = (currentScene % 3) + 1;
 
