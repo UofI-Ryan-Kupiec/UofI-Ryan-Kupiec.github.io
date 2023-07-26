@@ -107,7 +107,7 @@
         .attr("x", xScale(highlightStart))
         .attr("y", yPos)
         .attr("width", xScale(highlightEnd) - xScale(highlightStart))
-        .attr("height", height - margin.bottom - yPos)
+        .attr("height", height - margin.bottom) //  - yPos
         .attr("fill", "yellow")
         .attr("opacity", 0.3);
 
