@@ -38,6 +38,7 @@
     //}
     
     function drawLineChart1(data, scene_num) {
+      d3.select("#context-section").html("");
       const contextSection = d3.select("#context-section")
 
       contextSection.append("h1").text("Overview");
