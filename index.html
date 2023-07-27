@@ -154,7 +154,9 @@
     
       const svg = d3.select("#linechart-container svg");
       svg.html("");
-
+      
+      const svg = d3.select("#linechart-container svg");
+      
       const xScale = d3.scaleTime()
         .domain(d3.extent(filteredData, function(d) { return d.Year; }))
         .range([margin.left, width - margin.right]);
