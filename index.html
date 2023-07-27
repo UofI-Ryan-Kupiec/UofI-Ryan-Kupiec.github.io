@@ -25,6 +25,13 @@
       .append("svg")
       .attr("width", svgWidth)
       .attr("height", svgHeight);
+
+    d3.select("#next-button")
+      .style("position", "absolute")
+      .style("top", "20px")
+      .style("right", "20px")
+      .style("padding", "12px 20px") // Increase padding to make the button larger
+      .style("font-size", "16px");
     
     function drawLineChart1(data) {
       const contextSection = d3.select("#context-section")
