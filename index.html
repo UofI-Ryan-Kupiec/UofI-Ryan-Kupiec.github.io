@@ -16,7 +16,7 @@
     
     const svgWidth = window.innerWidth;
     const svgHeight = window.innerHeight;
-    const margin = { top: 50, right: 50, bottom: 0, left: 70 };
+    const margin = { top: 50, right: 50, bottom: 70, left: 70 };
     const width = svgWidth - margin.left - margin.right;
     const height = svgHeight - margin.top - margin.bottom;
     const dataUrl = "https://raw.githubusercontent.com/UofI-Ryan-Kupiec/UofI-Ryan-Kupiec.github.io/main/Baseball_Hitting_Historic_Data.csv";
@@ -48,10 +48,8 @@
       contextSection.append("p")
         .style("text-align", "center")
         .style("margin", "0 auto")   // Center the element using auto margins
-        .text("Over the last 8 years baseball has seen a change unlike any other sport. Statistics (sabermetrics as they are called in baseball) has taken over the game. It has caused some major changes to the way the game is played and we are going to explore some of those today.");
+        .text("Over the last decade baseball has seen a change unlike any stretch seen in sports history. Statistics has taken over the game and caused major changes to the way the game is played. Not all of these changes in play have been good for the game. As seen in this chart, one major change we have seen in the last few years is a staggering increase in the homerun rate.");
       
-      // contextSection.append("h1").text("Overview");
-      // contextSection.append("p").text("Over the last 8 years baseball has seen a change unlike any other sport. Statistics (sabermetrics as they are called in baseball) has taken over the game. It has caused some major changes to the way the game is played and we are going to explore some of those today.");
       const svg = d3.select("#linechart-container svg");
     
       svg.html("");
