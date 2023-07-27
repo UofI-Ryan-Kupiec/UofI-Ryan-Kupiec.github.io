@@ -41,8 +41,18 @@
       d3.select("#context-section").html("");
       const contextSection = d3.select("#context-section")
 
-      contextSection.append("h1").text("Overview");
-      contextSection.append("p").text("Over the last 8 years baseball has seen a change unlike any other sport. Statistics (sabermetrics as they are called in baseball) has taken over the game. It has caused some major changes to the way the game is played and we are going to explore some of those today.");
+      contextSection.append("h1")
+        .style("text-align", "center")
+        .text("Overview");
+
+      contextSection.append("p")
+        .style("text-align", "center")
+        .style("max-width", "400px") // Adjust the width as needed
+        .style("margin", "0 auto")   // Center the element using auto margins
+        .text("Over the last 8 years baseball has seen a change unlike any other sport. Statistics (sabermetrics as they are called in baseball) has taken over the game. It has caused some major changes to the way the game is played and we are going to explore some of those today.");
+      
+      // contextSection.append("h1").text("Overview");
+      // contextSection.append("p").text("Over the last 8 years baseball has seen a change unlike any other sport. Statistics (sabermetrics as they are called in baseball) has taken over the game. It has caused some major changes to the way the game is played and we are going to explore some of those today.");
       const svg = d3.select("#linechart-container svg");
     
       svg.html("");
