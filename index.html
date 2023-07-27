@@ -38,10 +38,6 @@
     //}
     
     function drawLineChart1(data, scene_num) {
-      if(scene_num == 3){
-        const data = data.filter(d => d.Year >= new Date(2014, 0, 1) && d.Year <= new Date(2023, 0, 1));
-      }
-      
       d3.select("#context-section").html("");
       const contextSection = d3.select("#context-section")
 
@@ -59,8 +55,6 @@
         .style("text-align", "center")  
         .style("font-size", "22px")
         .text("Please select the Next Chart button on the right when finished with this page!");
-      
-      //.style("margin", "0 auto")   // Center the element using auto margins
       
       const svg = d3.select("#linechart-container svg");
       svg.html("");
@@ -150,19 +144,6 @@
         .attr("text-anchor", "middle")
         .style("font-size", "16px")
         .text("Years 2014-2023: Explanation for these highlighted years");
-      }else if(scene_num == 3){
-        d3.select("#context-section").html("");
-        const contextSection = d3.select("#context-section")
-  
-        contextSection.append("h1")
-          .style("text-align", "center")
-          .style("font-size", "40px")
-          .text("Overview3");
-  
-        contextSection.append("p")
-          .style("text-align", "center")  
-          .style("font-size", "22px")
-          .text("3This new 'arms race' of data analysis was widely adopted by the league beginning in 2015 all teams began tracking advanded metrics using statcast. This new addition of advanced metrics highlighted what teams should value and as a result caused players to focus on the top metrics that would lead to larger contracts. This drove players to focus less on making contact frequently and more on making hard contact and getting the ball in there. This new prioirty explains this large spike in homeruns per game.");
       }
     }
 
@@ -225,7 +206,7 @@
         .attr("y", margin.top / 2)
         .attr("text-anchor", "middle")
         .style("font-size", "1.5em")
-        .text("Home Runs per Game over Time");
+        .text("Home Runs per Game from 2014-2023");
     }
     
     function drawLineChart3(data) {
@@ -395,9 +376,9 @@
           'BA': +d['BA']
         };
       }).then(function(data) {
-        if (currentScene === 1 || currentScene === 2 || currentScene === 3) {
+        if (currentScene === 1 || currentScene === 2) {
           drawLineChart1(data, currentScene); // Draw the first chart
-        } else if (currentScene === 4) {
+        } else if (currentScene === 3) {
           drawLineChart2(data); // Draw the second chart
         } else if (currentScene === 5) {
           drawLineChart3(data); // Draw the second chart
