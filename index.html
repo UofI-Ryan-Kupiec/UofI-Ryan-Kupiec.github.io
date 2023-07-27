@@ -102,13 +102,13 @@
         .attr("x", xScale(highlightStart))
         .attr("y", margin.top) // yPos
         .attr("width", xScale(highlightEnd) - xScale(highlightStart))
-        .attr("height", height - margin.bottom - yPos) //   
+        .attr("height", height - margin.bottom) // - yPos
         .attr("fill", "yellow")
         .attr("opacity", 0.3);
 
     annotationGroup.append("text")
       .attr("x", (xScale(highlightStart) + xScale(highlightEnd)) / 2)
-      .attr("y", yPos - 30) // Adjust the y position to place the text above the arrow
+      .attr("y", xScale(highlightStart) - 100) // Adjust the y position to place the text above the arrow
       .attr("text-anchor", "middle")
       .style("font-size", "16px")
       .text("Years 2000-2010: Explanation for these highlighted years");
