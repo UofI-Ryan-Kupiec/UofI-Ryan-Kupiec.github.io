@@ -32,8 +32,12 @@
       .style("right", "20px")
       .style("padding", "12px 20px") 
       .style("font-size", "16px");
+
+    //function drawLineChart1(data) {
+      //const filteredData = data.filter(d => d.Year >= new Date(2000, 0, 1) && d.Year <= new Date(2015, 0, 1));
+    //}
     
-    function drawLineChart1(data) {
+    function drawLineChart1(data, scene_num) {
       const contextSection = d3.select("#context-section")
 
       contextSection.append("h1").text("Overview");
@@ -88,6 +92,33 @@
         .attr("text-anchor", "middle")
         .style("font-size", "1.5em")
         .text("Home Runs per Game over Time");
+
+      if(scene_num == 2){
+        const highlightStart = new Date(2000, 0, 1);
+        const highlightEnd = new Date(2010, 0, 1);
+      
+        const annotationGroup = svg.append("g") 
+          .attr("class", "annotation")
+          .style("pointer-events", "none");
+      
+        const dataPoints = data.filter(d => d.Year >= highlightStart && d.Year <= highlightEnd);
+        const yPos = yScale(d3.max(dataPoints, d => d['HR/G']));
+  
+        annotationGroup.append("rect")
+          .attr("x", xScale(highlightStart))
+          .attr("y", margin.top) // yPos
+          .attr("width", xScale(highlightEnd) - xScale(highlightStart))
+          .attr("height", height - margin.bottom - margin.top) // - yPos
+          .attr("fill", "yellow")
+          .attr("opacity", 0.3);
+  
+      annotationGroup.append("text")
+        .attr("x", (xScale(highlightStart) + xScale(highlightEnd)) / 2)
+        .attr("y", xScale(highlightStart) - 100) // Adjust the y position to place the text above the arrow
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .text("Years 2000-2010: Explanation for these highlighted years");
+      }
     }
 
     function drawLineChart2(data) {
@@ -342,9 +373,9 @@
           'BA': +d['BA']
         };
       }).then(function(data) {
-        if (currentScene === 1) {
-          drawLineChart1(data); // Draw the first chart
-        } else if (currentScene === 2) {
+        if (currentScene === 1 || currentScene === 2) {
+          drawLineChart1(data, currentScene); // Draw the first chart
+        } else if (currentScene === 3) {
           drawLineChart2(data); // Draw the second chart
         } else if (currentScene === 3) {
           drawLineChart3(data); // Draw the second chart
