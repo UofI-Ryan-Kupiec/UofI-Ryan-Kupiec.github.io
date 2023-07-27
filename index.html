@@ -48,7 +48,7 @@
 
       contextSection.append("p")
         .style("text-align", "center")  
-        .style("font-size", "18px")
+        .style("font-size", "22px")
         .text("Over the last decade baseball has seen a change unlike any stretch seen in sports history. Statistics has taken over the game and caused major changes to the way the game is played. Not all of these changes in play have been good for the game. As seen in this chart, one major change we have seen in the last few years is a staggering increase in the homerun rate. Please select the Next Chart button on the right when finished with this page!");
       
       //.style("margin", "0 auto")   // Center the element using auto margins
@@ -115,7 +115,7 @@
   
         contextSection.append("p")
           .style("text-align", "center")  
-          .style("font-size", "16px")
+          .style("font-size", "22px")
           .text("This new 'arms race' of data analysis was widely adopted by the league beginning in 2015 all teams began tracking advanded metrics using statcast. This new addition of advanced metrics highlighted what teams should value and as a result caused players to focus on the top metrics that would lead to larger contracts. This drove players to focus less on making contact frequently and more on making hard contact and getting the ball in there. This new prioirty explains this large spike in homeruns per game.");
         
         const highlightStart = new Date(2000, 0, 1);
@@ -138,7 +138,7 @@
   
       annotationGroup.append("text")
         .attr("x", (xScale(highlightStart) + xScale(highlightEnd)) / 2)
-        .attr("y", xScale(highlightStart) - 100) // Adjust the y position to place the text above the arrow
+        .attr("y", xScale(highlightStart)) // Adjust the y position to place the text above the arrow
         .attr("text-anchor", "middle")
         .style("font-size", "16px")
         .text("Years 2000-2010: Explanation for these highlighted years");
