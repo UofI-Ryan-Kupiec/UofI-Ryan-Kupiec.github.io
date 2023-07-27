@@ -99,7 +99,56 @@
       contextSection.append("p").text("2Over the last 8 years baseball has seen a change unlike any other sport. Statistics (sabermetrics as they are called in baseball) has taken over the game. It has caused some major changes to the way the game is played and we are going to explore some of those today.");
 
       const svg = d3.select("#linechart-container svg");
-      
+    
+      svg.html("");
+
+      const xScale = d3.scaleTime()
+        .domain(d3.extent(data, function(d) { return d.Year; }))
+        .range([margin.left, width - margin.right]);
+
+      const yScale = d3.scaleLinear()
+        .domain(d3.extent(data, function(d) { return d['HR/G']; }))
+        .range([height - margin.bottom, margin.top]);
+
+      svg.append("g")
+        .attr("transform", `translate(0, ${height - margin.bottom})`)
+        .call(d3.axisBottom(xScale).ticks(d3.timeYear.every(10)));
+
+      svg.append("g")
+        .attr("transform", `translate(${margin.left}, 0)`)
+        .call(d3.axisLeft(yScale));
+
+      const line = d3.line()
+        .x(d => xScale(d.Year))
+        .y(d => yScale(d['HR/G']));
+
+      svg.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "blue")
+        .attr("stroke-width", 2)
+        .attr("d", line);
+
+      svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", height - margin.bottom / 2)
+        .attr("text-anchor", "middle")
+        .text("Year");
+
+      svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -height / 2)
+        .attr("y", margin.left / 2)
+        .attr("text-anchor", "middle")
+        .text("HR/G (Home Runs per Game)");
+
+      svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", margin.top / 2)
+        .attr("text-anchor", "middle")
+        .style("font-size", "1.5em")
+        .text("Home Runs per Game over Time");
+
       const highlightStart = new Date(2000, 0, 1);
       const highlightEnd = new Date(2010, 0, 1);
     
