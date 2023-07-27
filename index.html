@@ -38,7 +38,9 @@
     //}
     
     function drawLineChart1(data, scene_num) {
-      if(scene_num == 3){const filteredData = data.filter(d => d.Year >= new Date(2014, 0, 1) && d.Year <= new Date(2023, 0, 1));}
+      if(scene_num == 3){
+        const data = data.filter(d => d.Year >= new Date(2014, 0, 1) && d.Year <= new Date(2023, 0, 1));
+      }
       
       d3.select("#context-section").html("");
       const contextSection = d3.select("#context-section")
@@ -61,7 +63,6 @@
       //.style("margin", "0 auto")   // Center the element using auto margins
       
       const svg = d3.select("#linechart-container svg");
-    
       svg.html("");
 
       const xScale = d3.scaleTime()
