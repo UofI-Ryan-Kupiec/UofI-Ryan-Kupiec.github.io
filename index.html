@@ -207,6 +207,47 @@
         .attr("text-anchor", "middle")
         .style("font-size", "1.5em")
         .text("Home Runs per Game from 2014-2023");
+
+      const annotations = [
+    {
+      note: {
+        label: "2015: Explanation for this year",
+        title: "2015"
+      },
+      x: xScale(new Date(2015, 0, 1)),
+      y: yScale(filteredData.find(d => d.Year.getFullYear() === 2015)['HR/G']),
+      dy: -50,
+      dx: 0
+    },
+    {
+      note: {
+        label: "2018: Explanation for this year",
+        title: "2018"
+      },
+      x: xScale(new Date(2018, 0, 1)),
+      y: yScale(filteredData.find(d => d.Year.getFullYear() === 2018)['HR/G']),
+      dy: -50,
+      dx: 0
+    },
+    {
+      note: {
+        label: "2021: Explanation for this year",
+        title: "2021"
+      },
+      x: xScale(new Date(2021, 0, 1)),
+      y: yScale(filteredData.find(d => d.Year.getFullYear() === 2021)['HR/G']),
+      dy: -50,
+      dx: 0
+    }
+  ];
+
+  const makeAnnotations = d3.annotation()
+    .type(d3.annotationLabel)
+    .annotations(annotations);
+
+  svg.append("g")
+    .attr("class", "annotation-group")
+    .call(makeAnnotations);
     }
     
     function drawLineChart3(data) {
