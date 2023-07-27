@@ -105,6 +105,19 @@
         .text("Home Runs per Game over Time");
 
       if(scene_num == 2){
+        d3.select("#context-section").html("");
+        const contextSection = d3.select("#context-section")
+  
+        contextSection.append("h1")
+          .style("text-align", "center")
+          .style("font-size", "22px")
+          .text("Overview");
+  
+        contextSection.append("p")
+          .style("text-align", "center")  
+          .style("font-size", "16px")
+          .text("One particular period of interest is this last 8 years which is deemed as the statcast era. This is when statistics were largely adopted across baseball.");
+        
         const highlightStart = new Date(2000, 0, 1);
         const highlightEnd = new Date(2010, 0, 1);
       
