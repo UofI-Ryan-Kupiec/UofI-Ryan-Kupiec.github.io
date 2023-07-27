@@ -154,9 +154,16 @@
 
       const contextSection = d3.select("#context-section")
 
-      contextSection.append("h1").text("Statcast Era");
-      contextSection.append("p").text("2Over the last 8 years baseball has seen a change unlike any other sport. Statistics (sabermetrics as they are called in baseball) has taken over the game. It has caused some major changes to the way the game is played and we are going to explore some of those today.");
-
+      contextSection.append("h1")
+          .style("text-align", "center")
+          .style("font-size", "40px")
+          .text("Statcast Era");
+  
+      contextSection.append("p")
+          .style("text-align", "center")  
+          .style("font-size", "22px")
+          .text("This jump in homeruns per game caused many investigations by the league into whether the balls were 'juiced'. A thorough investigation found that 40% of the increase in homeruns in 2019 was due to play behavior changing. Players began trying to swing harder and hit the ball higher with the hopes of hitting more homeruns. This lead to less balls being put in play. The MLB has a reputation as a boring sport and less balls in play means less action and as a result less interest from casual fans. The MLB has put many ");
+      
       const svg = d3.select("#linechart-container svg");
     
       svg.html("");
