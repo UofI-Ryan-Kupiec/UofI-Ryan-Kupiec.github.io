@@ -110,7 +110,7 @@
   
         contextSection.append("h1")
           .style("text-align", "center")
-          .style("font-size", "22px")
+          .style("font-size", "40px")
           .text("Overview");
   
         contextSection.append("p")
@@ -118,8 +118,8 @@
           .style("font-size", "22px")
           .text("This new 'arms race' of data analysis was widely adopted by the league beginning in 2015 all teams began tracking advanded metrics using statcast. This new addition of advanced metrics highlighted what teams should value and as a result caused players to focus on the top metrics that would lead to larger contracts. This drove players to focus less on making contact frequently and more on making hard contact and getting the ball in there. This new prioirty explains this large spike in homeruns per game.");
         
-        const highlightStart = new Date(2000, 0, 1);
-        const highlightEnd = new Date(2010, 0, 1);
+        const highlightStart = new Date(2015, 0, 1);
+        const highlightEnd = new Date(2023, 0, 1);
       
         const annotationGroup = svg.append("g") 
           .attr("class", "annotation")
@@ -141,11 +141,13 @@
         .attr("y", xScale(highlightStart)) // Adjust the y position to place the text above the arrow
         .attr("text-anchor", "middle")
         .style("font-size", "16px")
-        .text("Years 2000-2010: Explanation for these highlighted years");
+        .text("Years 2015-2023: Explanation for these highlighted years");
       }
     }
 
     function drawLineChart2(data) {
+      const filteredData = data.filter(d => d.Year >= new Date(2015, 0, 1) && d.Year <= new Date(2023, 0, 1));
+      
       d3.select("#context-section").html("");
 
       const contextSection = d3.select("#context-section")
@@ -158,16 +160,16 @@
       svg.html("");
 
       const xScale = d3.scaleTime()
-        .domain(d3.extent(data, function(d) { return d.Year; }))
+        .domain(d3.extent(filteredData, function(d) { return d.Year; }))
         .range([margin.left, width - margin.right]);
 
       const yScale = d3.scaleLinear()
-        .domain(d3.extent(data, function(d) { return d['HR/G']; }))
+        .domain(d3.extent(filteredData, function(d) { return d['HR/G']; }))
         .range([height - margin.bottom, margin.top]);
 
       svg.append("g")
         .attr("transform", `translate(0, ${height - margin.bottom})`)
-        .call(d3.axisBottom(xScale).ticks(d3.timeYear.every(10)));
+        .call(d3.axisBottom(xScale).ticks(d3.timeYear.every(1)));
 
       svg.append("g")
         .attr("transform", `translate(${margin.left}, 0)`)
@@ -178,7 +180,7 @@
         .y(d => yScale(d['HR/G']));
 
       svg.append("path")
-        .datum(data)
+        .datum(filteredData)
         .attr("fill", "none")
         .attr("stroke", "blue")
         .attr("stroke-width", 2)
@@ -203,31 +205,6 @@
         .attr("text-anchor", "middle")
         .style("font-size", "1.5em")
         .text("Home Runs per Game over Time");
-
-      const highlightStart = new Date(2000, 0, 1);
-      const highlightEnd = new Date(2010, 0, 1);
-    
-      const annotationGroup = svg.append("g") 
-        .attr("class", "annotation")
-        .style("pointer-events", "none");
-    
-      const dataPoints = data.filter(d => d.Year >= highlightStart && d.Year <= highlightEnd);
-      const yPos = yScale(d3.max(dataPoints, d => d['HR/G']));
-
-      annotationGroup.append("rect")
-        .attr("x", xScale(highlightStart))
-        .attr("y", margin.top) // yPos
-        .attr("width", xScale(highlightEnd) - xScale(highlightStart))
-        .attr("height", height - margin.bottom - margin.top) // - yPos
-        .attr("fill", "yellow")
-        .attr("opacity", 0.3);
-
-    annotationGroup.append("text")
-      .attr("x", (xScale(highlightStart) + xScale(highlightEnd)) / 2)
-      .attr("y", xScale(highlightStart) - 100) // Adjust the y position to place the text above the arrow
-      .attr("text-anchor", "middle")
-      .style("font-size", "16px")
-      .text("Years 2000-2010: Explanation for these highlighted years");
     }
     
     function drawLineChart3(data) {
