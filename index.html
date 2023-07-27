@@ -38,6 +38,8 @@
     //}
     
     function drawLineChart1(data, scene_num) {
+      if(scene_num == 3){const filteredData = data.filter(d => d.Year >= new Date(2014, 0, 1) && d.Year <= new Date(2023, 0, 1));}
+      
       d3.select("#context-section").html("");
       const contextSection = d3.select("#context-section")
 
@@ -49,7 +51,12 @@
       contextSection.append("p")
         .style("text-align", "center")  
         .style("font-size", "22px")
-        .text("Over the last decade baseball has seen a change unlike any stretch seen in sports history. Statistics has taken over the game and caused major changes to the way the game is played. Not all of these changes in play have been good for the game. As seen in this chart, one major change we have seen in the last few years is a staggering increase in the homerun rate. Please select the Next Chart button on the right when finished with this page!");
+        .text("Over the last decade baseball has seen a change unlike any stretch seen in sports history. Statistics has taken over the game and caused major changes to the way the game is played. Not all of these changes in play have been good for the game. As seen in this chart, one major change we have seen in the last few years is a staggering increase in the homerun rate.");
+
+      contextSection.append("p")
+        .style("text-align", "center")  
+        .style("font-size", "22px")
+        .text("Please select the Next Chart button on the right when finished with this page!");
       
       //.style("margin", "0 auto")   // Center the element using auto margins
       
@@ -118,7 +125,7 @@
           .style("font-size", "22px")
           .text("This new 'arms race' of data analysis was widely adopted by the league beginning in 2015 all teams began tracking advanded metrics using statcast. This new addition of advanced metrics highlighted what teams should value and as a result caused players to focus on the top metrics that would lead to larger contracts. This drove players to focus less on making contact frequently and more on making hard contact and getting the ball in there. This new prioirty explains this large spike in homeruns per game.");
         
-        const highlightStart = new Date(2015, 0, 1);
+        const highlightStart = new Date(2014, 0, 1);
         const highlightEnd = new Date(2023, 0, 1);
       
         const annotationGroup = svg.append("g") 
@@ -141,18 +148,31 @@
         .attr("y", xScale(highlightStart)) // Adjust the y position to place the text above the arrow
         .attr("text-anchor", "middle")
         .style("font-size", "16px")
-        .text("Years 2015-2023: Explanation for these highlighted years");
+        .text("Years 2014-2023: Explanation for these highlighted years");
+      }else if(scene_num == 3){
+        d3.select("#context-section").html("");
+        const contextSection = d3.select("#context-section")
+  
+        contextSection.append("h1")
+          .style("text-align", "center")
+          .style("font-size", "40px")
+          .text("Overview3");
+  
+        contextSection.append("p")
+          .style("text-align", "center")  
+          .style("font-size", "22px")
+          .text("3This new 'arms race' of data analysis was widely adopted by the league beginning in 2015 all teams began tracking advanded metrics using statcast. This new addition of advanced metrics highlighted what teams should value and as a result caused players to focus on the top metrics that would lead to larger contracts. This drove players to focus less on making contact frequently and more on making hard contact and getting the ball in there. This new prioirty explains this large spike in homeruns per game.");
       }
     }
 
     function drawLineChart2(data) {
-      const filteredData = data.filter(d => d.Year >= new Date(2015, 0, 1) && d.Year <= new Date(2023, 0, 1));
+      const filteredData = data.filter(d => d.Year >= new Date(2014, 0, 1) && d.Year <= new Date(2023, 0, 1));
       
       d3.select("#context-section").html("");
 
       const contextSection = d3.select("#context-section")
 
-      contextSection.append("h1").text("Overview2");
+      contextSection.append("h1").text("Statcast Era");
       contextSection.append("p").text("2Over the last 8 years baseball has seen a change unlike any other sport. Statistics (sabermetrics as they are called in baseball) has taken over the game. It has caused some major changes to the way the game is played and we are going to explore some of those today.");
 
       const svg = d3.select("#linechart-container svg");
@@ -374,11 +394,11 @@
           'BA': +d['BA']
         };
       }).then(function(data) {
-        if (currentScene === 1 || currentScene === 2) {
+        if (currentScene === 1 || currentScene === 2 || currentScene === 3) {
           drawLineChart1(data, currentScene); // Draw the first chart
-        } else if (currentScene === 3) {
+        } else if (currentScene === 4) {
           drawLineChart2(data); // Draw the second chart
-        } else if (currentScene === 3) {
+        } else if (currentScene === 5) {
           drawLineChart3(data); // Draw the second chart
         }
       });
