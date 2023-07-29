@@ -452,43 +452,88 @@
           const selectedChart = this.value;
           drawSelectedChart(data, selectedChart);
       });
- const slider = d3.select("#year-range");
-  const sliderValues = d3.select(".slider-values");
 
-  slider.on("input", function () {
-    const selectedYears = this.value.split(",").map(Number);
-    updateGraph(selectedYears);
-    sliderValues.text(selectedYears[0] + " - " + selectedYears[1]);
-  });
+    // Add a clipPath: everything out of this area won't be drawn.
+    const clip = svg.append("defs").append("svg:clipPath")
+        .attr("id", "clip")
+        .append("svg:rect")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("x", 0)
+        .attr("y", 0);
 
-  // Function to update the graph based on the slider value
-  function updateGraph(selectedYears) {
-    const [startYear, endYear] = selectedYears;
+    // Add brushing
+    const brush = d3.brushX()                   // Add the brush feature using the d3.brush function
+        .extent( [ [0,0], [width,height] ] )  // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
+        .on("end", updateChart)               // Each time the brush selection changes, trigger the 'updateChart' function
 
-    const newData = data.filter(d => d.Year >= new Date(startYear, 0, 1) && d.Year <= new Date(endYear, 0, 1));
+    // Create the line variable: where both the line and the brush take place
+    const line = svg.append('g')
+      .attr("clip-path", "url(#clip)")
 
-    // Update the scales and axes with the filtered data
-    xScale.domain([new Date(startYear, 0, 1), new Date(endYear, 0, 1)]);
-    yScale.domain(d3.extent(newData, d => d["HR/G"]));
-
-    // Select and bind data to the line path
-    const linePath = svg.selectAll(".line").data([newData]);
-
-    // Enter new data
-    linePath.enter()
-      .append("path")
-      .attr("class", "line")
+    // Add the line
+    line.append("path")
+      .datum(data)
+      .attr("class", "line")  // I add the class line to be able to modify this line later on.
       .attr("fill", "none")
-      .attr("stroke", "blue")
-      .attr("stroke-width", 2)
-      .merge(linePath) // Merge enter and existing data
-      .attr("d", line.x(d => xScale(d.Year)).y(d => yScale(d["HR/G"])));
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", 1.5)
+      .attr("d", d3.line()
+        .x(function(d) { return x(d.date) })
+        .y(function(d) { return y(d.value) })
+        )
 
-    // Update x and y axes
-    svg.select(".x-axis").call(d3.axisBottom(xScale).ticks(d3.timeYear.every(1)));
-    svg.select(".y-axis").call(d3.axisLeft(yScale));
-  }
-  updateGraph([2000, 2023]);
+    // Add the brushing
+    line
+      .append("g")
+        .attr("class", "brush")
+        .call(brush);
+
+    // A function that set idleTimeOut to null
+    let idleTimeout
+    function idled() { idleTimeout = null; }
+
+    // A function that update the chart for given boundaries
+    function updateChart(event,d) {
+
+      // What are the selected boundaries?
+      extent = event.selection
+
+      // If no selection, back to initial coordinate. Otherwise, update X axis domain
+      if(!extent){
+        if (!idleTimeout) return idleTimeout = setTimeout(idled, 350); // This allows to wait a little bit
+        x.domain([ 4,8])
+      }else{
+        x.domain([ x.invert(extent[0]), x.invert(extent[1]) ])
+        line.select(".brush").call(brush.move, null) // This remove the grey brush area as soon as the selection has been done
+      }
+
+      // Update axis and line position
+      xAxis.transition().duration(1000).call(d3.axisBottom(x))
+      line
+          .select('.line')
+          .transition()
+          .duration(1000)
+          .attr("d", d3.line()
+            .x(function(d) { return x(d.date) })
+            .y(function(d) { return y(d.value) })
+          )
+    }
+
+    // If user double click, reinitialize the chart
+    svg.on("dblclick",function(){
+      x.domain(d3.extent(data, function(d) { return d.date; }))
+      xAxis.transition().call(d3.axisBottom(x))
+      line
+        .select('.line')
+        .transition()
+        .attr("d", d3.line()
+          .x(function(d) { return x(d.date) })
+          .y(function(d) { return y(d.value) })
+      )
+    });
+
+       
 }
 
     // CHART SELECTION FUNCTION
