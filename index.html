@@ -280,7 +280,9 @@
     .attr("class", "annotation-group")
     .call(makeAnnotations);
     }
-    
+
+
+    // BATTING AVERAGE CHART
     function drawLineChart3(data) {
       const filteredData = data.filter(d => d.Year >= new Date(2014, 0, 1) && d.Year <= new Date(2023, 0, 1));
       
@@ -290,11 +292,11 @@
 
       // Setup scales and axes for the second chart
       const xScale = d3.scaleTime()
-        .domain(d3.extent(data, function(d) { return d.Year; }))
+        .domain(d3.extent(filteredData, function(d) { return d.Year; }))
         .range([margin.left, width - margin.right]);
 
       const yScale = d3.scaleLinear()
-        .domain(d3.extent(data, function(d) { return d['BA']; }))
+        .domain(d3.extent(filteredData, function(d) { return d['BA']; }))
         .range([height - margin.bottom, margin.top]);
 
       svg.append("g")
@@ -310,7 +312,7 @@
         .y(d => yScale(d['BA']));
 
       svg.append("path")
-        .datum(data)
+        .datum(filteredData)
         .attr("fill", "none")
         .attr("stroke", "blue")
         .attr("stroke-width", 2)
