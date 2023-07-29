@@ -17,6 +17,11 @@
       <option value="ba">Batting Average</option>
     </select>
   </div>
+  <div class="slider-container">
+    <label for="year-range">Select Years:</label>
+    <input type="range" id="year-range" min="1885" max="2023" step="1" value="1885,2023" />
+    <span class="slider-values">1885 - 2023</span>
+  </div>
   <button id="zoom-reset-button" style="display: none;">Reset Zoom</button>
   <button id="next-button">Next Chart</button>
 
@@ -440,29 +445,25 @@
           drawSelectedChart(data, selectedChart);
       });
 
-       const zoom = d3.zoom()
-    .scaleExtent([1, 10]) // Set the zoom level limits (min and max)
-    .translateExtent([[margin.left, 0], [width - margin.right, height]]) // Set the zoomable area
-    .extent([[margin.left, 0], [width - margin.right, height]]) // Set the zoomable area
-    .on("zoom", zoomed);
+  const slider = d3.select("#year-range");
+  const sliderValues = d3.select(".slider-values");
 
-  svg.call(zoom);
+  slider.on("input", function() {
+    const selectedYears = this.value.split(",").map(Number);
+    updateGraph(selectedYears);
+    sliderValues.text(selectedYears[0] + " - " + selectedYears[1]);
+  });
 
-  function zoomed(event) {
-    const { transform } = event;
-    const { x } = transform;
+  // Function to update the graph based on the slider value
+    function updateGraph(selectedYears) {
+        const [startYear, endYear] = selectedYears;
+        const newData = data.filter(d => d.Year >= new Date(startYear, 0, 1) && d.Year <= new Date(endYear, 0, 1));
 
-    // Update the xScale domain based on the zoom transform
-    const xScaleZoomed = transform.rescaleX(xScale);
-    svg.select(".x-axis").call(d3.axisBottom(xScaleZoomed).ticks(d3.timeYear.every(1)));
-
-    // Redraw the line with the updated xScale
-    svg.select("path").attr("d", line.x(d => xScaleZoomed(d.Year)));
-
-    // Apply the zoom transform to the line
-    svg.select("path").attr("transform", `translate(${x}, 0)`);
-  }
-
+        xScale.domain([new Date(startYear, 0, 1), new Date(endYear, 0, 1)]);
+        svg.select(".x-axis").call(d3.axisBottom(xScale).ticks(d3.timeYear.every(1)));
+        svg.select("path").attr("d", line.x(d => xScale(d.Year)));
+      }
+       updateGraph([1890, 2023]);
     }
 
     // CHART SELECTION FUNCTION
