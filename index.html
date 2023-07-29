@@ -10,6 +10,14 @@
 <body>
   <div id="context-section"></div>
   <div id="linechart-container"></div>
+    <div id="chart-selector" style="display: none;">
+    <label for="chart-type">Select Chart:</label>
+    <select id="chart-type">
+      <option value="hr">HR/Game</option>
+      <option value="ba">Batting Average</option>
+    </select>
+  </div>
+  <button id="zoom-reset-button" style="display: none;">Reset Zoom</button>
   <button id="next-button">Next Chart</button>
 
   <script>
@@ -33,10 +41,6 @@
       .style("padding", "12px 20px") 
       .style("font-size", "16px");
 
-    //function drawLineChart1(data) {
-      //const filteredData = data.filter(d => d.Year >= new Date(2000, 0, 1) && d.Year <= new Date(2015, 0, 1));
-    //}
-    
     function drawLineChart1(data, scene_num) {
       d3.select("#context-section").html("");
       const contextSection = d3.select("#context-section")
@@ -337,6 +341,11 @@
         .attr("text-anchor", "middle")
         .style("font-size", "1.5em")
         .text("Batting Average Over The Last 25 Years");
+
+      // Shift began
+      // Shift was banned; pitch clocks added
+      //statcast introduced 
+      // DH in both leagues 2020
     }
 
     // Initialize the scene number to 1 (first chart)
