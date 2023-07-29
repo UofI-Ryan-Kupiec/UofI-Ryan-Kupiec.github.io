@@ -316,16 +316,6 @@
         .attr("stroke-width", 2)
         .attr("d", line);
 
-      svg.selectAll("circle")
-        .data(data)
-        .enter()
-        .append("circle")
-        .attr("cx", (d) => xScale(d.Year))
-        .attr("cy", (d) => yScale(d['BA']))
-        .attr("r", 5)
-        .attr("fill", "blue")
-        .attr("opacity", 0.5);
-
       svg.append("text")
         .attr("x", width / 2)
         .attr("y", height - margin.bottom / 2)
