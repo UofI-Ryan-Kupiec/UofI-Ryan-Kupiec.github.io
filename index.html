@@ -284,7 +284,7 @@
 
     // BATTING AVERAGE CHART
     function drawLineChart3(data) {
-      const filteredData = data.filter(d => d.Year >= new Date(2003, 0, 1) && d.Year <= new Date(2023, 0, 1));
+      const filteredData = data.filter(d => d.Year >= new Date(1998, 0, 1) && d.Year <= new Date(2023, 0, 1));
       
       const svg = d3.select("#linechart-container svg");
       // Clear the contents of the SVG container
@@ -336,7 +336,7 @@
         .attr("y", margin.top / 2)
         .attr("text-anchor", "middle")
         .style("font-size", "1.5em")
-        .text("Batting Average over Time");
+        .text("Batting Average Over The Last 25 Years");
     }
 
     // Initialize the scene number to 1 (first chart)
