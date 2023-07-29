@@ -433,6 +433,11 @@
         .attr("text-anchor", "middle")
         .style("font-size", "1.5em")
         .text("Home Runs per Game over Time");
+
+      d3.select("#chart-type").on("change", function() {
+          const selectedChart = d3.select(this).property("value");
+          drawSelectedChart(data, selectedChart);
+      };
     }
 
     // CHART SELECTION FUNCTION
@@ -444,22 +449,6 @@
       } else if (chartType === "ba") {
         drawLineChart3(data);
       }
-    
-      const svg = d3.select("#linechart-container svg");
-        const zoom = d3.zoom()
-          .scaleExtent([1, 10]) // Limit zoom scale to between 1x and 10x
-          .translateExtent([[margin.left, 0], [width - margin.right, height]])
-          .on("zoom", function(event) {
-            const newXScale = event.transform.rescaleX(xScale);
-            svg.select(".x-axis").call(d3.axisBottom(newXScale).ticks(d3.timeYear.every(1)));
-            svg.selectAll("path").attr("d", line.x(d => newXScale(d.Year)));
-            svg.selectAll("circle").attr("cx", d => newXScale(d.Year));
-      });
-
-      // d3.select("#chart-type").on("change", function() {
-          // const selectedChart = d3.select(this).property("value");
-          // drawSelectedChart(data, selectedChart);
-      //};
     }
 
   
