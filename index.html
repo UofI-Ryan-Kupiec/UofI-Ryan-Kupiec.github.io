@@ -377,7 +377,7 @@ const line = svg.append('g')
 
     // BATTING AVERAGE CHART
     function drawLineChart3(data, lastChart = false) {
-      if(lastChart){
+      if(!lastChart){
         const filteredData = data.filter(d => d.Year >= new Date(1998, 0, 1) && d.Year <= new Date(2023, 0, 1));
       }else{
         const filteredData = data
