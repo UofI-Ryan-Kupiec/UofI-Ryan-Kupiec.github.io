@@ -284,7 +284,7 @@
 
     // BATTING AVERAGE CHART
     function drawLineChart3(data) {
-      const filteredData = data.filter(d => d.Year >= new Date(2014, 0, 1) && d.Year <= new Date(2023, 0, 1));
+      const filteredData = data.filter(d => d.Year >= new Date(2003, 0, 1) && d.Year <= new Date(2023, 0, 1));
       
       const svg = d3.select("#linechart-container svg");
       // Clear the contents of the SVG container
@@ -301,7 +301,7 @@
 
       svg.append("g")
         .attr("transform", `translate(0, ${height - margin.bottom})`)
-        .call(d3.axisBottom(xScale).ticks(d3.timeYear.every(5)));
+        .call(d3.axisBottom(xScale).ticks(d3.timeYear.every(1)));
 
       svg.append("g")
         .attr("transform", `translate(${margin.left}, 0)`)
