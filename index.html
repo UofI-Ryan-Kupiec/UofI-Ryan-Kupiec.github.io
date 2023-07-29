@@ -363,8 +363,27 @@
         .style("font-size", "22px")
         .text("Feel free to explore further!");
 
+       // Remove next button
       d3.select("#next-button").style("display", "none")
-       
+
+       // add chart selector dropdown
+      d3.select("#chart-selector")
+      .style("display", "block")
+      .style("position", "absolute")
+      .style("top", "60%")
+      .style("right", "20px")
+      .style("padding", "12px 20px") 
+      .style("font-size", "16px");
+    
+    // add a zoom reset button
+    d3.select("#zoom-reset-button")
+      .style("display", "block")
+      .style("position", "absolute")
+      .style("top", "65%")
+      .style("right", "20px")
+      .style("padding", "12px 20px") 
+      .style("font-size", "16px");
+
       const svg = d3.select("#linechart-container svg");
       svg.html("");
 
@@ -426,22 +445,6 @@
         drawLineChart3(data);
       }
     
-    d3.select("#chart-selector")
-      .style("display", "block")
-      .style("position", "absolute")
-      .style("top", "60%")
-      .style("right", "20px")
-      .style("padding", "12px 20px") 
-      .style("font-size", "16px");
-    
-    d3.select("#zoom-reset-button")
-      .style("display", "block")
-      .style("position", "absolute")
-      .style("top", "65%")
-      .style("right", "20px")
-      .style("padding", "12px 20px") 
-      .style("font-size", "16px");
-
       const svg = d3.select("#linechart-container svg");
         const zoom = d3.zoom()
           .scaleExtent([1, 10]) // Limit zoom scale to between 1x and 10x
