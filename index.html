@@ -377,7 +377,11 @@ const line = svg.append('g')
 
     // BATTING AVERAGE CHART
     function drawLineChart3(data, lastChart = false) {
-      const filteredData = data.filter(d => d.Year >= new Date(1998, 0, 1) && d.Year <= new Date(2023, 0, 1));
+      if(lastChart){
+        const filteredData = data.filter(d => d.Year >= new Date(1998, 0, 1) && d.Year <= new Date(2023, 0, 1));
+      }else{
+        const filteredData = data
+      }
       
       const svg = d3.select("#linechart-container svg");
       // Clear the contents of the SVG container
@@ -400,6 +404,7 @@ const line = svg.append('g')
         .attr("transform", `translate(${margin.left}, 0)`)
         .call(d3.axisLeft(yScale));
 
+      /*
       const line = d3.line()
         .x(d => xScale(d.Year))
         .y(d => yScale(d['BA']));
@@ -410,6 +415,45 @@ const line = svg.append('g')
         .attr("stroke", "blue")
         .attr("stroke-width", 2)
         .attr("d", line);
+*/
+
+
+      
+    const clip = svg.append("defs").append("svg:clipPath")
+        .attr("id", "clip")
+        .append("svg:rect")
+        .attr("width", width - margin.left - margin.right) 
+        .attr("height", height - margin.top - margin.bottom) 
+        .attr("x", margin.left) 
+        .attr("y", margin.top); 
+
+    const brush = d3.brushX()                   
+        .extent( [ [0,0], [width,height] ] )  
+        .on("end", updateChart)               
+       
+const line = svg.append('g')
+       .attr("clip-path", "url(#clip)")
+    
+    // Add the line
+    line.append("path")
+      .datum(filteredData)
+      .attr("class", "line")  // I add the class line to be able to modify this line later on.
+      .attr("fill", "none")
+      .attr("stroke", "blue")
+      .attr("stroke-width", 2)
+      .attr("d", d3.line()
+        .x(d => xScale(d.Year))
+        .y(d => yScale(d['BA']))
+        )
+
+    if(lastChart){
+    line
+      .append("g")
+        .attr("class", "brush")
+        .call(brush);
+    }
+
+
 
       svg.append("text")
         .attr("x", width / 2)
@@ -435,6 +479,59 @@ const line = svg.append('g')
       // Shift was banned; pitch clocks added
       //statcast introduced 
       // DH in both leagues 2020
+
+
+
+
+
+      
+       // A function that set idleTimeOut to null
+    let idleTimeout
+    function idled() { idleTimeout = null; }
+
+  function updateChart(event) {
+    // UPDATE: What are the selected boundaries?
+    const extent = event.selection;
+
+    // If no selection, back to initial coordinate. Otherwise, update X axis domain
+    if (!extent) {
+      if (!idleTimeout) return idleTimeout = setTimeout(idled, 350); // This allows waiting a little bit
+      xScale.domain(d3.extent(filteredData, function(d) { return d.Year; }));
+    } else {
+      xScale.domain([xScale.invert(extent[0]), xScale.invert(extent[1])]);
+      line.select(".brush").call(brush.move, null); // This removes the grey brush area as soon as the selection has been done
+    }
+
+    xAxis.transition().duration(1000).call(d3.axisBottom(xScale));
+    line.select('.line')
+      .transition()
+      .duration(1000)
+      .attr("d", d3.line()
+        .x(d => xScale(d.Year))
+        .y(d => yScale(d['BA']))
+      );
+  }
+
+  xAxis.transition().duration(1000).call(d3.axisBottom(xScale));
+  line.select('.line')
+    .transition()
+    .duration(1000)
+    .attr("d", d3.line()
+      .x(d => xScale(d.Year))
+      .y(d => yScale(d['BA']))
+    );
+
+  // If user double clicks, reinitialize the chart
+  svg.on("dblclick", function() {
+    xScale.domain(d3.extent(filteredData, function(d) { return d.Year; }));
+    xAxis.transition().call(d3.axisBottom(xScale));
+    line.select('.line')
+      .transition()
+      .attr("d", d3.line()
+        .x(d => xScale(d.Year))
+        .y(d => yScale(d['BA']))
+      );
+  });      
     }
 
     // LAST CHART + USER INTERACTION
