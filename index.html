@@ -348,7 +348,7 @@
       // DH in both leagues 2020
     }
 
-
+    // LAST CHART + USER INTERACTION
      function drawLineChart4(data) {
       d3.select("#context-section").html("");
       const contextSection = d3.select("#context-section")
@@ -384,8 +384,13 @@
       .style("padding", "12px 20px") 
       .style("font-size", "16px");
 
-      const svg = d3.select("#linechart-container svg");
-      svg.html("");
+      const zoom = d3.zoom()
+        .scaleExtent([1, 10]) // Set the zoom level limits (min and max)
+        .on("zoom", zoomed); // Call the zoomed function when a zoom event occurs
+
+       const svg = d3.select("#linechart-container svg");
+       svg.html("");
+       svg.call(zoom);
 
       const xScale = d3.scaleTime()
         .domain(d3.extent(data, function(d) { return d.Year; }))
