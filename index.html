@@ -384,9 +384,9 @@
             svg.selectAll("circle").attr("cx", d => newXScale(d.Year));
       });
 
-      d3.select("#chart-type").on("change", function() {
-          const selectedChart = d3.select(this).property("value");
-          drawSelectedChart(data, selectedChart);
+      // d3.select("#chart-type").on("change", function() {
+          // const selectedChart = d3.select(this).property("value");
+          // drawSelectedChart(data, selectedChart);
       };
     }
 
