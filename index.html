@@ -356,10 +356,9 @@
       } else if (chartType === "ba") {
         drawLineChart3(data);
       }
-
-      const isLastChart = currentScene === 3;
-      d3.select("#chart-selector").style("display", isLastChart ? "block" : "none");
-      d3.select("#zoom-reset-button").style("display", isLastChart ? "block" : "none");
+    
+    d3.select("#chart-selector").style("display", "block");
+    d3.select("#zoom-reset-button").style("display", "block");
     }
     
     // Initialize the scene number to 1 (first chart)
@@ -401,6 +400,46 @@
     }).then(function(data) {
       drawLineChart1(data); // Draw the initial chart with the first set of data
     });
+
+
+
+
+
+       // Add zoom behavior to the SVG container (only for the last chart)
+    const svg = d3.select("#linechart-container svg");
+    const zoom = d3.zoom()
+      .scaleExtent([1, 10]) // Limit zoom scale to between 1x and 10x
+      .translateExtent([[margin.left, 0], [width - margin.right, height]])
+      .on("zoom", function(event) {
+        const newXScale = event.transform.rescaleX(xScale);
+        svg.select(".x-axis").call(d3.axisBottom(newXScale).ticks(d3.timeYear.every(1)));
+        svg.selectAll("path").attr("d", line.x(d => newXScale(d.Year)));
+        svg.selectAll("circle").attr("cx", d => newXScale(d.Year));
+      });
+
+    // Add a "Reset Zoom" button event listener (only for the last chart)
+    d3.select("#zoom-reset-button").on("click", function() {
+      // Reset the zoom to the initial state (1x scale and no translation)
+      svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
+    });
+
+    // Add event listener for chart selection
+    d3.select("#chart-type").on("change", function() {
+      const selectedChart = d3.select(this).property("value");
+      // Fetch data from the CSV file and draw the selected chart
+      d3.csv(dataUrl, function(d) {
+        return {
+          Year: d3.timeParse('%Y')(d.Year.toString()),
+          'HR/G': +d['HR/G'],
+          'BA': +d['BA']
+        };
+      }).then(function(data) {
+        drawSelectedChart(data, selectedChart);
+      });
+    });
+
+
+    
   </script>
 </body>
 </html>
