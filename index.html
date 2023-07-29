@@ -359,6 +359,17 @@
     
     d3.select("#chart-selector").style("display", "block");
     d3.select("#zoom-reset-button").style("display", "block");
+
+      const svg = d3.select("#linechart-container svg");
+      const zoom = d3.zoom()
+      .scaleExtent([1, 10]) // Limit zoom scale to between 1x and 10x
+      .translateExtent([[margin.left, 0], [width - margin.right, height]])
+      .on("zoom", function(event) {
+        const newXScale = event.transform.rescaleX(xScale);
+        svg.select(".x-axis").call(d3.axisBottom(newXScale).ticks(d3.timeYear.every(1)));
+        svg.selectAll("path").attr("d", line.x(d => newXScale(d.Year)));
+        svg.selectAll("circle").attr("cx", d => newXScale(d.Year));
+      });
     }
     
     // Initialize the scene number to 1 (first chart)
