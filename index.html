@@ -402,27 +402,6 @@
     });
 
 
-
-
-
-       // Add zoom behavior to the SVG container (only for the last chart)
-    const svg = d3.select("#linechart-container svg");
-    const zoom = d3.zoom()
-      .scaleExtent([1, 10]) // Limit zoom scale to between 1x and 10x
-      .translateExtent([[margin.left, 0], [width - margin.right, height]])
-      .on("zoom", function(event) {
-        const newXScale = event.transform.rescaleX(xScale);
-        svg.select(".x-axis").call(d3.axisBottom(newXScale).ticks(d3.timeYear.every(1)));
-        svg.selectAll("path").attr("d", line.x(d => newXScale(d.Year)));
-        svg.selectAll("circle").attr("cx", d => newXScale(d.Year));
-      });
-
-    // Add a "Reset Zoom" button event listener (only for the last chart)
-    d3.select("#zoom-reset-button").on("click", function() {
-      // Reset the zoom to the initial state (1x scale and no translation)
-      svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
-    });
-
     
   </script>
 </body>
