@@ -70,7 +70,7 @@
         .domain(d3.extent(data, function(d) { return d['HR/G']; }))
         .range([height - margin.bottom, margin.top]);
 
-     svg.append("g")
+     const xAxis = svg.append("g")
         .attr("transform", `translate(0, ${height - margin.bottom})`)
         .call(d3.axisBottom(xScale).ticks(d3.timeYear.every(10)));
 
@@ -179,7 +179,7 @@
         .domain(d3.extent(filteredData, function(d) { return d['HR/G']; }))
         .range([height - margin.bottom, margin.top]);
 
-      svg.append("g")
+      const xAxis = svg.append("g")
         .attr("transform", `translate(0, ${height - margin.bottom})`)
         .call(d3.axisBottom(xScale).ticks(d3.timeYear.every(1)));
 
@@ -302,7 +302,7 @@
         .domain(d3.extent(filteredData, function(d) { return d['BA']; }))
         .range([height - margin.bottom, margin.top]);
 
-      svg.append("g")
+      const xAxis = svg.append("g")
         .attr("transform", `translate(0, ${height - margin.bottom})`)
         .call(d3.axisBottom(xScale).ticks(d3.timeYear.every(1)));
 
@@ -373,24 +373,7 @@
       .style("right", "20px")
       .style("padding", "12px 20px") 
       .style("font-size", "16px");
-    
-    // add a zoom reset button
-    d3.select("#zoom-reset-button")
-      .style("display", "block")
-      .style("position", "absolute")
-      .style("top", "65%")
-      .style("right", "20px")
-      .style("padding", "12px 20px") 
-      .style("font-size", "16px");
-
-      d3.select("#slider-container")
-      .style("opacity",1)
-      .style("position", "absolute")
-      .style("top", "50%")
-      .style("right", "20px")
-      .style("padding", "12px 20px") 
-      .style("font-size", "16px");
-    
+        
        const svg = d3.select("#linechart-container svg");
        svg.html("");
        
@@ -474,7 +457,6 @@ const line = svg.append('g')
         .text("Home Runs per Game over Time");
 
       d3.select("#chart-type").on("change", function() {
-          // const selectedChart = d3.select(this).property("value");
           const selectedChart = this.value;
           drawSelectedChart(data, selectedChart);
       });
