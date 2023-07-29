@@ -415,8 +415,8 @@
     const clip = svg.append("defs").append("svg:clipPath")
         .attr("id", "clip")
         .append("svg:rect")
-        .attr("width", width - margin.left - margin.right) // UPDATE: Adjust the width to the actual chart area
-        .attr("height", height - margin.top - margin.bottom) // UPDATE: Adjust the height to the actual chart area
+        .attr("width", 50)//width - margin.left - margin.right) // UPDATE: Adjust the width to the actual chart area
+        .attr("height", 50)//height - margin.top - margin.bottom) // UPDATE: Adjust the height to the actual chart area
         .attr("x", margin.left) // UPDATE: Set the x-coordinate to the left margin
         .attr("y", margin.top); 
 
@@ -482,26 +482,28 @@ const line = svg.append('g')
     let idleTimeout
     function idled() { idleTimeout = null; }
 
-  // Function that updates the chart for given boundaries
-function updateChart(event) {
-  // UPDATE: What are the selected boundaries?
-  const extent = event.selection;
+  function updateChart(event) {
+    // UPDATE: What are the selected boundaries?
+    const extent = event.selection;
 
-  // If no selection, back to initial coordinate. Otherwise, update X axis domain
-  if (!extent) {
-    if (!idleTimeout) return idleTimeout = setTimeout(idled, 350); // This allows waiting a little bit
-    xScale.domain(d3.extent(data, function(d) { return d.Year; }));
-  } else {
-    // UPDATE: Get the start and end years from the xScale domain
-    const [startYear, endYear] = xScale.domain();
-    
-    // UPDATE: Calculate the new start and end years based on the extent of the zoom selection
-    const newStartYear = xScale.invert(extent[0]);
-    const newEndYear = xScale.invert(extent[1]);
-    
-    // UPDATE: Update the xScale domain based on the new start and end years
-    xScale.domain([newStartYear, newEndYear]);
-    line.select(".brush").call(brush.move, null); // This removes the grey brush area as soon as the selection has been done
+    // If no selection, back to initial coordinate. Otherwise, update X axis domain
+    if (!extent) {
+      if (!idleTimeout) return idleTimeout = setTimeout(idled, 350); // This allows waiting a little bit
+      xScale.domain(d3.extent(data, function(d) { return d.Year; }));
+    } else {
+      xScale.domain([xScale.invert(extent[0]), xScale.invert(extent[1])]);
+      line.select(".brush").call(brush.move, null); // This removes the grey brush area as soon as the selection has been done
+    }
+
+    // UPDATE: Update axis and line position
+    xAxis.transition().duration(1000).call(d3.axisBottom(xScale));
+    line.select('.line')
+      .transition()
+      .duration(1000)
+      .attr("d", d3.line()
+        .x(d => xScale(d.Year))
+        .y(d => yScale(d['HR/G']))
+      );
   }
 
   // UPDATE: Update axis and line position
