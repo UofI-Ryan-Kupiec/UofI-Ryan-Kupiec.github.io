@@ -40,7 +40,7 @@
       .style("padding", "12px 20px") 
       .style("font-size", "16px");
 
-    function drawLineChart1(data, scene_num, lastChart == false) {
+    function drawLineChart1(data, scene_num, lastChart = false) {
       d3.select("#context-section").html("");
       const contextSection = d3.select("#context-section")
 
@@ -240,7 +240,7 @@ const line = svg.append('g')
       }
     }
 
-    function drawLineChart2(data, lastChart == false) {
+    function drawLineChart2(data, lastChart = false) {
       const filteredData = data.filter(d => d.Year >= new Date(2014, 0, 1) && d.Year <= new Date(2023, 0, 1));
       
       d3.select("#context-section").html("");
@@ -376,7 +376,7 @@ const line = svg.append('g')
 
 
     // BATTING AVERAGE CHART
-    function drawLineChart3(data, lastChart == false) {
+    function drawLineChart3(data, lastChart = false) {
       const filteredData = data.filter(d => d.Year >= new Date(1998, 0, 1) && d.Year <= new Date(2023, 0, 1));
       
       const svg = d3.select("#linechart-container svg");
@@ -595,7 +595,7 @@ const line = svg.append('g')
       d3.select("#context-section").html("");
 
       if (chartType === "hr") {
-        drawLineChart1(data, 1, lastChart == true);
+        drawLineChart1(data, 1, lastChart = true);
         d3.select("#context-section").html("");
         const contextSection = d3.select("#context-section")
 
@@ -610,7 +610,7 @@ const line = svg.append('g')
           .text("That is the end of the slide show. Feel free to explore further if there were any additional trends you wanted to look into!");
 
       } else if (chartType === "ba") {
-        drawLineChart3(data, lastChart == true);
+        drawLineChart3(data, lastChart = true);
         d3.select("#context-section").html("");
         const contextSection = d3.select("#context-section")
 
