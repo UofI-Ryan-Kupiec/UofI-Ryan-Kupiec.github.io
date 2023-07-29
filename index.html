@@ -356,12 +356,12 @@
       contextSection.append("h1")
         .style("text-align", "center")
         .style("font-size", "40px")
-        .text("Overview");
+        .text("Conclusion");
 
       contextSection.append("p")
         .style("text-align", "center")  
         .style("font-size", "22px")
-        .text("Feel free to explore further!");
+        .text("That is the end of the slide show. Feel free to explore further if there were any additional trends you wanted to look into!");
 
        // Remove next button
       d3.select("#next-button").style("display", "none")
@@ -435,7 +435,8 @@
         .text("Home Runs per Game over Time");
 
       d3.select("#chart-type").on("change", function() {
-          const selectedChart = d3.select(this).property("value");
+          // const selectedChart = d3.select(this).property("value");
+          const selectedChart = this.value;
           drawSelectedChart(data, selectedChart);
       });
 
@@ -451,8 +452,34 @@
 
       if (chartType === "hr") {
         drawLineChart1(data, 2);
+        d3.select("#context-section").html("");
+        const contextSection = d3.select("#context-section")
+
+        contextSection.append("h1")
+          .style("text-align", "center")
+          .style("font-size", "40px")
+          .text("Conclusion");
+
+        contextSection.append("p")
+          .style("text-align", "center")  
+          .style("font-size", "22px")
+          .text("That is the end of the slide show. Feel free to explore further if there were any additional trends you wanted to look into!");
+
       } else if (chartType === "ba") {
         drawLineChart3(data);
+        d3.select("#context-section").html("");
+        const contextSection = d3.select("#context-section")
+
+        contextSection.append("h1")
+          .style("text-align", "center")
+          .style("font-size", "40px")
+          .text("Conclusion");
+
+        contextSection.append("p")
+          .style("text-align", "center")  
+          .style("font-size", "22px")
+          .text("That is the end of the slide show. Feel free to explore further if there were any additional trends you wanted to look into!");
+
       }
     }
 
