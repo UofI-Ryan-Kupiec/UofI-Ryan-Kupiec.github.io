@@ -393,20 +393,17 @@
         .attr("transform", `translate(${margin.left}, 0)`)
         .call(d3.axisLeft(yScale));
 
-
-           // Add a clipPath: everything out of this area won't be drawn.
     const clip = svg.append("defs").append("svg:clipPath")
         .attr("id", "clip")
         .append("svg:rect")
-        .attr("width", width - margin.left - margin.right) // UPDATE: Adjust the width to the actual chart area
-        .attr("height", height - margin.top - margin.bottom) // UPDATE: Adjust the height to the actual chart area
-        .attr("x", margin.left) // UPDATE: Set the x-coordinate to the left margin
+        .attr("width", width - margin.left - margin.right) 
+        .attr("height", height - margin.top - margin.bottom) 
+        .attr("x", margin.left) 
         .attr("y", margin.top); 
 
-    // Add brushing
-    const brush = d3.brushX()                   // Add the brush feature using the d3.brush function
-        .extent( [ [0,0], [width,height] ] )  // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
-        .on("end", updateChart)               // Each time the brush selection changes, trigger the 'updateChart' function
+    const brush = d3.brushX()                   
+        .extent( [ [0,0], [width,height] ] )  
+        .on("end", updateChart)               
        
 const line = svg.append('g')
        .attr("clip-path", "url(#clip)")
@@ -428,13 +425,6 @@ const line = svg.append('g')
       .append("g")
         .attr("class", "brush")
         .call(brush);
-
-      svg.append("path")
-        .datum(data)
-        .attr("fill", "none")
-        .attr("stroke", "blue")
-        .attr("stroke-width", 2)
-        .attr("d", line);
 
       svg.append("text")
         .attr("x", width / 2)
@@ -478,7 +468,6 @@ const line = svg.append('g')
       line.select(".brush").call(brush.move, null); // This removes the grey brush area as soon as the selection has been done
     }
 
-    // UPDATE: Update axis and line position
     xAxis.transition().duration(1000).call(d3.axisBottom(xScale));
     line.select('.line')
       .transition()
@@ -489,7 +478,6 @@ const line = svg.append('g')
       );
   }
 
-  // UPDATE: Update axis and line position
   xAxis.transition().duration(1000).call(d3.axisBottom(xScale));
   line.select('.line')
     .transition()
@@ -517,7 +505,7 @@ const line = svg.append('g')
       d3.select("#context-section").html("");
 
       if (chartType === "hr") {
-        drawLineChart1(data, 2);
+        drawLineChart1(data, 1);
         d3.select("#context-section").html("");
         const contextSection = d3.select("#context-section")
 
