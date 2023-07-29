@@ -77,7 +77,8 @@
       svg.append("g")
         .attr("transform", `translate(${margin.left}, 0)`)
         .call(d3.axisLeft(yScale));
-
+      
+      /*
       const line = d3.line()
         .x(d => xScale(d.Year))
         .y(d => yScale(d['HR/G']));
@@ -88,6 +89,41 @@
         .attr("stroke", "blue")
         .attr("stroke-width", 2)
         .attr("d", line);
+      */
+
+    const clip = svg.append("defs").append("svg:clipPath")
+        .attr("id", "clip")
+        .append("svg:rect")
+        .attr("width", width - margin.left - margin.right) 
+        .attr("height", height - margin.top - margin.bottom) 
+        .attr("x", margin.left) 
+        .attr("y", margin.top); 
+
+    const brush = d3.brushX()                   
+        .extent( [ [0,0], [width,height] ] )  
+        .on("end", updateChart)               
+       
+const line = svg.append('g')
+       .attr("clip-path", "url(#clip)")
+    
+    // Add the line
+    line.append("path")
+      .datum(data)
+      .attr("class", "line")  // I add the class line to be able to modify this line later on.
+      .attr("fill", "none")
+      .attr("stroke", "blue")
+      .attr("stroke-width", 2)
+      .attr("d", d3.line()
+        .x(d => xScale(d.Year))
+        .y(d => yScale(d['HR/G']))
+        )
+
+    if(lastChart){
+    line
+      .append("g")
+        .attr("class", "brush")
+        .call(brush);
+    }
 
       svg.append("text")
         .attr("x", width / 2)
