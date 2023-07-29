@@ -415,8 +415,8 @@
     const clip = svg.append("defs").append("svg:clipPath")
         .attr("id", "clip")
         .append("svg:rect")
-        .attr("width", 50)//width - margin.left - margin.right) // UPDATE: Adjust the width to the actual chart area
-        .attr("height", 50)//height - margin.top - margin.bottom) // UPDATE: Adjust the height to the actual chart area
+        .attr("width", width - margin.left - margin.right) // UPDATE: Adjust the width to the actual chart area
+        .attr("height", height - margin.top - margin.bottom) // UPDATE: Adjust the height to the actual chart area
         .attr("x", margin.left) // UPDATE: Set the x-coordinate to the left margin
         .attr("y", margin.top); 
 
@@ -426,6 +426,7 @@
         .on("end", updateChart)               // Each time the brush selection changes, trigger the 'updateChart' function
        
 const line = svg.append('g')
+       .attr("clip-path", "url(#clip)")
     
     // Add the line
     line.append("path")
