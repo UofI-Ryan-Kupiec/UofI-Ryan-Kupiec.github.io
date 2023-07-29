@@ -423,22 +423,6 @@
       svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
     });
 
-    // Add event listener for chart selection
-    d3.select("#chart-type").on("change", function() {
-      const selectedChart = d3.select(this).property("value");
-      // Fetch data from the CSV file and draw the selected chart
-      d3.csv(dataUrl, function(d) {
-        return {
-          Year: d3.timeParse('%Y')(d.Year.toString()),
-          'HR/G': +d['HR/G'],
-          'BA': +d['BA']
-        };
-      }).then(function(data) {
-        drawSelectedChart(data, selectedChart);
-      });
-    });
-
-
     
   </script>
 </body>
