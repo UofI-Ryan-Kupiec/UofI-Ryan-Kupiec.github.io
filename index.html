@@ -440,31 +440,28 @@
           drawSelectedChart(data, selectedChart);
       });
 
-      const zoom = d3.zoom()
-        .scaleExtent([1, 10]) // Set the zoom level limits (min and max)
-        .on("zoom", zoomed); // Call the zoomed function when a zoom event occurs
-      svg.call(zoom);
+       const zoom = d3.zoom()
+    .scaleExtent([1, 10]) // Set the zoom level limits (min and max)
+    .translateExtent([[margin.left, 0], [width - margin.right, height]]) // Set the zoomable area
+    .extent([[margin.left, 0], [width - margin.right, height]]) // Set the zoomable area
+    .on("zoom", zoomed);
 
-    function zoomed(event) {
-    // This function will be called when a zoom event occurs
+  svg.call(zoom);
 
-    // Get the current zoom level and translate values
+  function zoomed(event) {
     const { transform } = event;
-    const { k, x, y } = transform;
+    const { x } = transform;
 
-    // Apply the zoom transformation to the chart elements
-    svg.selectAll("path").attr("transform", `translate(${x},${y}) scale(${k})`);
+    // Update the xScale domain based on the zoom transform
+    const xScaleZoomed = transform.rescaleX(xScale);
+    svg.select(".x-axis").call(d3.axisBottom(xScaleZoomed).ticks(d3.timeYear.every(1)));
 
-    // Also update the axes when zooming
-    svg.select(".x-axis").call(d3.axisBottom(xScale).ticks(d3.timeYear.every(1)).scale(d3.event.transform.rescaleX(xScale)));
-    svg.select(".y-axis").call(d3.axisLeft(yScale).scale(d3.event.transform.rescaleY(yScale)));
+    // Redraw the line with the updated xScale
+    svg.select("path").attr("d", line.x(d => xScaleZoomed(d.Year)));
+
+    // Apply the zoom transform to the line
+    svg.select("path").attr("transform", `translate(${x}, 0)`);
   }
-
-  // Add event listener to the zoom reset button
-  d3.select("#zoom-reset-button").on("click", function() {
-    // Reset the zoom level and pan position to the initial state
-    svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity);
-  });
 
     }
 
