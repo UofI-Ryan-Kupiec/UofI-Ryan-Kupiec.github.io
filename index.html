@@ -384,14 +384,9 @@
       .style("padding", "12px 20px") 
       .style("font-size", "16px");
 
-      const zoom = d3.zoom()
-        .scaleExtent([1, 10]) // Set the zoom level limits (min and max)
-        .on("zoom", zoomed); // Call the zoomed function when a zoom event occurs
-
        const svg = d3.select("#linechart-container svg");
        svg.html("");
-       svg.call(zoom);
-
+       
       const xScale = d3.scaleTime()
         .domain(d3.extent(data, function(d) { return d.Year; }))
         .range([margin.left, width - margin.right]);
@@ -443,6 +438,11 @@
           const selectedChart = d3.select(this).property("value");
           drawSelectedChart(data, selectedChart);
       });
+
+      const zoom = d3.zoom()
+        .scaleExtent([1, 10]) // Set the zoom level limits (min and max)
+        .on("zoom", zoomed); // Call the zoomed function when a zoom event occurs
+      svg.call(zoom);
     }
 
     // CHART SELECTION FUNCTION
@@ -456,9 +456,6 @@
       }
     }
 
-  
-      
-    
     // Initialize the scene number to 1 (first chart)
     let currentScene = 1;
 
