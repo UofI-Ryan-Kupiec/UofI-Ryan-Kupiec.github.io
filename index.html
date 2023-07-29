@@ -348,6 +348,20 @@
       // DH in both leagues 2020
     }
 
+    function drawSelectedChart(data, chartType) {
+      d3.select("#context-section").html("");
+
+      if (chartType === "hr") {
+        drawLineChart1(data, 1);
+      } else if (chartType === "ba") {
+        drawLineChart3(data);
+      }
+
+      const isLastChart = currentScene === 3;
+      d3.select("#chart-selector").style("display", isLastChart ? "block" : "none");
+      d3.select("#zoom-reset-button").style("display", isLastChart ? "block" : "none");
+    }
+    
     // Initialize the scene number to 1 (first chart)
     let currentScene = 1;
 
@@ -355,7 +369,7 @@
     d3.select("#next-button").on("click", function() {
       svg.selectAll(".annotation").remove();
       // Increment the current scene number
-      currentScene = (currentScene % 4) + 1;
+      currentScene++;
 
       // Fetch data from the CSV file and draw the appropriate chart
       d3.csv(dataUrl, function(d) {
