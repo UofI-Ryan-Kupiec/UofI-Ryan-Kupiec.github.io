@@ -432,14 +432,13 @@ const line = svg.append('g')
       .datum(data)
       .attr("class", "line")  // I add the class line to be able to modify this line later on.
       .attr("fill", "none")
+      .attr("stroke", "blue")
+      .attr("stroke-width", 2)
       .attr("d", d3.line()
         .x(d => xScale(d.Year))
         .y(d => yScale(d['HR/G']))
         )
 
-      //.attr("stroke", "steelblue")
-      //.attr("stroke-width", 1.5)
-    
     // Add the brushing
     line
       .append("g")
