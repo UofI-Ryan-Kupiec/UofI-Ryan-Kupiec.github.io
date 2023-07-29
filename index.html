@@ -415,10 +415,10 @@
     const clip = svg.append("defs").append("svg:clipPath")
         .attr("id", "clip")
         .append("svg:rect")
-        .attr("width", xScale)
-        .attr("height", yScale)
-        .attr("x", 0)
-        .attr("y", 0);
+        .attr("width", width - margin.left - margin.right) // UPDATE: Adjust the width to the actual chart area
+        .attr("height", height - margin.top - margin.bottom) // UPDATE: Adjust the height to the actual chart area
+        .attr("x", margin.left) // UPDATE: Set the x-coordinate to the left margin
+        .attr("y", margin.top); 
 
     // Add brushing
     const brush = d3.brushX()                   // Add the brush feature using the d3.brush function
@@ -432,13 +432,14 @@ const line = svg.append('g')
       .datum(data)
       .attr("class", "line")  // I add the class line to be able to modify this line later on.
       .attr("fill", "none")
-      .attr("stroke", "steelblue")
-      .attr("stroke-width", 1.5)
       .attr("d", d3.line()
         .x(d => xScale(d.Year))
         .y(d => yScale(d['HR/G']))
         )
 
+      //.attr("stroke", "steelblue")
+      //.attr("stroke-width", 1.5)
+    
     // Add the brushing
     line
       .append("g")
