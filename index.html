@@ -11,7 +11,7 @@
   <div id="context-section"></div>
   <div id="linechart-container"></div>
     <div id="chart-selector" style="display: none;">
-    <label for="chart-type">Select Chart:</label>
+    <label for="chart-type"  id="chart-type-label">Select Chart:</label>
     <select id="chart-type">
       <option value="hr">HR/Game</option>
       <option value="ba">Batting Average</option>
@@ -405,21 +405,6 @@ const line = svg.append('g')
         .attr("transform", `translate(${margin.left}, 0)`)
         .call(d3.axisLeft(yScale));
 
-      /*
-      const line = d3.line()
-        .x(d => xScale(d.Year))
-        .y(d => yScale(d['BA']));
-
-      svg.append("path")
-        .datum(filteredData)
-        .attr("fill", "none")
-        .attr("stroke", "blue")
-        .attr("stroke-width", 2)
-        .attr("d", line);
-*/
-
-
-      
     const clip = svg.append("defs").append("svg:clipPath")
         .attr("id", "clip")
         .append("svg:rect")
@@ -454,8 +439,6 @@ const line = svg.append('g')
         .call(brush);
     }
 
-
-
       svg.append("text")
         .attr("x", width / 2)
         .attr("y", height - margin.bottom / 2)
@@ -480,10 +463,6 @@ const line = svg.append('g')
       // Shift was banned; pitch clocks added
       //statcast introduced 
       // DH in both leagues 2020
-
-
-
-
 
       
        // A function that set idleTimeOut to null
@@ -557,11 +536,16 @@ const line = svg.append('g')
       d3.select("#chart-selector")
       .style("display", "block")
       .style("position", "absolute")
-      .style("top", "60%")
+      .style("top", "50%")
       .style("right", "20px")
       .style("padding", "12px 20px") 
       .style("font-size", "16px");
-        
+
+       d3.select("#chart-type-label")
+        .style("display", "block")
+        .style("text-align", "center")
+        .style("font-size", "16px");
+       
        const svg = d3.select("#linechart-container svg");
        svg.html("");
        
