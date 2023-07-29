@@ -233,7 +233,7 @@
       },
       x: xScale(new Date(2019, 0, 1)),
       y: yScale(filteredData.find(d => d.Year.getFullYear() === 2019)['HR/G']),
-      dy: -50,
+      dy: 150,
       dx: 0
     },
     {
@@ -253,7 +253,7 @@
       },
       x: xScale(new Date(2022, 0, 1)),
       y: yScale(filteredData.find(d => d.Year.getFullYear() === 2022)['HR/G']),
-      dy: -50,
+      dy: -100,
       dx: 0
     },
     {
@@ -263,11 +263,11 @@
         title: "2022"
       },
       subject: {
-            radius: 50
+            radius: 10
           },
       x: xScale(new Date(2023, 0, 1)),
       y: yScale(filteredData.find(d => d.Year.getFullYear() === 2023)['HR/G']),
-      dy: -50,
+      dy: 50,
       dx: 0
     }
   ];
