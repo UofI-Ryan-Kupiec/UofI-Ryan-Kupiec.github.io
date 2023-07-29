@@ -511,8 +511,8 @@ const line = svg.append('g')
           .transition()
           .duration(1000)
           .attr("d", d3.line()
-            .x(function(d) { return x(d.date) })
-            .y(function(d) { return y(d.value) })
+          .x(d => xScale(d.Year))
+          .y(d => yScale(d['HR/G']))
           )
     }
 
@@ -523,9 +523,9 @@ const line = svg.append('g')
       line
         .select('.line')
         .transition()
-        .attr("d", d3.line()
-          .x(function(d) { return x(d.date) })
-          .y(function(d) { return y(d.value) })
+        .attr("d", d3.line()        
+        .x(d => xScale(d.Year))
+        .y(d => yScale(d['HR/G']))
       )
     });
 
