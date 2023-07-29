@@ -222,7 +222,35 @@ const line = svg.append('g')
       
         const dataPoints = data.filter(d => d.Year >= highlightStart && d.Year <= highlightEnd);
         const yPos = yScale(d3.max(dataPoints, d => d['HR/G']));
-  
+
+          const annotations = [
+    {
+      type: d3.annotationCalloutCircle,
+      note: {
+        label: "Statcast Era",
+        title: "2015-2023"
+      },
+      subject: {
+            radius: xScale(new Date(2023, 0, 1)) - xScale(new Date(2015, 0, 1))
+          },
+    x: xScale(new Date(2015, 0, 1)), // Start date
+    y: yScale(filteredData.find(d => d.Year.getFullYear() === 2023)['HR/G']),
+    dy: 50,
+    dx: 0
+    }
+  ];
+
+  const makeAnnotations = d3.annotation()
+    .type(d3.annotationLabel)
+    .annotations(annotations);
+
+  svg.append("g")
+    .attr("class", "annotation-group")
+    .call(makeAnnotations);
+    }
+
+        
+        /*
         annotationGroup.append("rect")
           .attr("x", xScale(highlightStart))
           .attr("y", margin.top) // yPos
@@ -238,6 +266,7 @@ const line = svg.append('g')
         .style("font-size", "16px")
         .text("Years 2014-2023: Explanation for these highlighted years");
       }
+      */
     }
 
     function drawLineChart2(data, lastChart = false) {
