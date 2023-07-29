@@ -282,92 +282,6 @@
     }
     
     function drawLineChart3(data) {
-      d3.select("#context-section").html("");
-      
-      const contextSection = d3.select("#context-section")
-
-      contextSection.append("h1").text("Home Runs ");
-      contextSection.append("p").text("This chart ");
-
-      const svg = d3.select("#linechart-container svg");
-      // Clear the contents of the SVG container
-      svg.html("");
-
-      // Setup scales and axes for the first chart
-      const xScale = d3.scaleTime()
-        .domain(d3.extent(data, function(d) { return d.Year; }))
-        .range([margin.left, width - margin.right]);
-
-      const yScale = d3.scaleLinear()
-        .domain(d3.extent(data, function(d) { return d['HR/G']; }))
-        .range([height - margin.bottom, margin.top]);
-
-      svg.append("g")
-        .attr("transform", `translate(0, ${height - margin.bottom})`)
-        .call(d3.axisBottom(xScale).ticks(d3.timeYear.every(10)));
-
-      svg.append("g")
-        .attr("transform", `translate(${margin.left}, 0)`)
-        .call(d3.axisLeft(yScale));
-
-      const line = d3.line()
-        .x(d => xScale(d.Year))
-        .y(d => yScale(d['HR/G']));
-
-      svg.append("path")
-        .datum(data)
-        .attr("fill", "none")
-        .attr("stroke", "blue")
-        .attr("stroke-width", 2)
-        .attr("d", line);
-
-      svg.append("text")
-        .attr("x", width / 2)
-        .attr("y", height - margin.bottom / 2)
-        .attr("text-anchor", "middle")
-        .text("Year");
-
-      svg.append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("x", -height / 2)
-        .attr("y", margin.left / 2)
-        .attr("text-anchor", "middle")
-        .text("HR/G (Home Runs per Game)");
-
-      svg.append("text")
-        .attr("x", width / 2)
-        .attr("y", margin.top / 2)
-        .attr("text-anchor", "middle")
-        .style("font-size", "1.5em")
-        .text("Home Runs per Game over Time");
-
-      const highlightStart = new Date(2011, 0, 1);
-      const highlightEnd = new Date(2020, 0, 1);
-    
-      const annotationGroup = svg.append("g") 
-        .attr("class", "annotation")
-        .style("pointer-events", "none");
-    
-      const dataPoints = data.filter(d => d.Year >= highlightStart && d.Year <= highlightEnd);
-      const yPos = yScale(d3.max(dataPoints, d => d['HR/G']));
-
-      annotationGroup.append("rect")
-        .attr("x", xScale(highlightStart))
-        .attr("y", yPos)
-        .attr("width", xScale(highlightEnd) - xScale(highlightStart))
-        .attr("height", height - margin.bottom - yPos) // - yPos
-        .attr("fill", "yellow")
-        .attr("opacity", 0.3);
-
-      annotationGroup.append("text")
-        .attr("x", (xScale(highlightStart) + xScale(highlightEnd)) / 2)
-        .attr("y", yPos - 20)
-        .attr("text-anchor", "middle")
-        .style("font-size", "16px")
-        .text("Years 2000-2010: Explanation for these highlighted years");
-    }
-    
-    function drawLineChart3(data) {
       const svg = d3.select("#linechart-container svg");
       // Clear the contents of the SVG container
       svg.html("");
@@ -438,7 +352,7 @@
     d3.select("#next-button").on("click", function() {
       svg.selectAll(".annotation").remove();
       // Increment the current scene number
-      currentScene = (currentScene % 3) + 1;
+      currentScene = (currentScene % 4) + 1;
 
       // Fetch data from the CSV file and draw the appropriate chart
       d3.csv(dataUrl, function(d) {
@@ -452,8 +366,10 @@
           drawLineChart1(data, currentScene); // Draw the first chart
         } else if (currentScene === 3) {
           drawLineChart2(data); // Draw the second chart
-        } else if (currentScene === 5) {
+        } else if (currentScene === 4) {
           drawLineChart3(data); // Draw the second chart
+        }else {
+          drawLineChart1(data, 1); // Draw the second chart
         }
       });
     });
