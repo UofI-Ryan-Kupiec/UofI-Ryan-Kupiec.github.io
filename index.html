@@ -282,6 +282,8 @@
     }
     
     function drawLineChart3(data) {
+      const filteredData = data.filter(d => d.Year >= new Date(2014, 0, 1) && d.Year <= new Date(2023, 0, 1));
+      
       const svg = d3.select("#linechart-container svg");
       // Clear the contents of the SVG container
       svg.html("");
