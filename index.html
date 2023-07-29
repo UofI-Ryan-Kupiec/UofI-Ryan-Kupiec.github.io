@@ -348,6 +348,73 @@
       // DH in both leagues 2020
     }
 
+
+     function drawLineChart4(data) {
+      d3.select("#context-section").html("");
+      const contextSection = d3.select("#context-section")
+
+      contextSection.append("h1")
+        .style("text-align", "center")
+        .style("font-size", "40px")
+        .text("Overview");
+
+      contextSection.append("p")
+        .style("text-align", "center")  
+        .style("font-size", "22px")
+        .text("Feel free to explore further!");
+
+      const svg = d3.select("#linechart-container svg");
+      svg.html("");
+
+      const xScale = d3.scaleTime()
+        .domain(d3.extent(data, function(d) { return d.Year; }))
+        .range([margin.left, width - margin.right]);
+
+      const yScale = d3.scaleLinear()
+        .domain(d3.extent(data, function(d) { return d['HR/G']; }))
+        .range([height - margin.bottom, margin.top]);
+
+      svg.append("g")
+        .attr("transform", `translate(0, ${height - margin.bottom})`)
+        .call(d3.axisBottom(xScale).ticks(d3.timeYear.every(10)));
+
+      svg.append("g")
+        .attr("transform", `translate(${margin.left}, 0)`)
+        .call(d3.axisLeft(yScale));
+
+      const line = d3.line()
+        .x(d => xScale(d.Year))
+        .y(d => yScale(d['HR/G']));
+
+      svg.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "blue")
+        .attr("stroke-width", 2)
+        .attr("d", line);
+
+      svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", height - margin.bottom / 2)
+        .attr("text-anchor", "middle")
+        .text("Year");
+
+      svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -height / 2)
+        .attr("y", margin.left / 2)
+        .attr("text-anchor", "middle")
+        .text("HR/G (Home Runs per Game)");
+
+      svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", margin.top / 2)
+        .attr("text-anchor", "middle")
+        .style("font-size", "1.5em")
+        .text("Home Runs per Game over Time");
+    }
+
+    // CHART SELECTION FUNCTION
     function drawSelectedChart(data, chartType) {
       d3.select("#context-section").html("");
 
@@ -417,7 +484,7 @@
         } else if (currentScene === 4) {
           drawLineChart3(data); // Draw the second chart
         }else {
-          drawSelectedChart(data, 'hr'); // Draw the second chart
+          drawLineChart4(data); // Draw the second chart
         }
       });
     });
