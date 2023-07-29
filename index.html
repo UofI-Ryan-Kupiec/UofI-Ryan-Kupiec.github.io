@@ -17,7 +17,7 @@
       <option value="ba">Batting Average</option>
     </select>
   </div>
-  <div class="slider-container">
+  <div class="slider-container" style="opacity: 0;">
     <label for="year-range">Select Years:</label>
     <input type="range" id="year-range" min="1885" max="2023" step="1" value="1885,2023" />
     <span class="slider-values">1885 - 2023</span>
@@ -389,6 +389,14 @@
       .style("padding", "12px 20px") 
       .style("font-size", "16px");
 
+      d3.select("#slider-container")
+      .style("opacity",1)
+      .style("position", "absolute")
+      .style("top", "50%")
+      .style("right", "20px")
+      .style("padding", "12px 20px") 
+      .style("font-size", "16px");
+    
        const svg = d3.select("#linechart-container svg");
        svg.html("");
        
@@ -444,14 +452,44 @@
           const selectedChart = this.value;
           drawSelectedChart(data, selectedChart);
       });
-
-  const slider = d3.select("#year-range");
+ const slider = d3.select("#year-range");
   const sliderValues = d3.select(".slider-values");
 
-  slider.on("input", function() {
+  slider.on("input", function () {
     const selectedYears = this.value.split(",").map(Number);
     updateGraph(selectedYears);
     sliderValues.text(selectedYears[0] + " - " + selectedYears[1]);
+  });
+
+  // Function to update the graph based on the slider value
+  function updateGraph(selectedYears) {
+    const [startYear, endYear] = selectedYears;
+
+    const newData = data.filter(d => d.Year >= new Date(startYear, 0, 1) && d.Year <= new Date(endYear, 0, 1));
+
+    // Update the scales and axes with the filtered data
+    xScale.domain([new Date(startYear, 0, 1), new Date(endYear, 0, 1)]);
+    yScale.domain(d3.extent(newData, d => d["HR/G"]));
+
+    // Select and bind data to the line path
+    const linePath = svg.selectAll(".line").data([newData]);
+
+    // Enter new data
+    linePath.enter()
+      .append("path")
+      .attr("class", "line")
+      .attr("fill", "none")
+      .attr("stroke", "blue")
+      .attr("stroke-width", 2)
+      .merge(linePath) // Merge enter and existing data
+      .attr("d", line.x(d => xScale(d.Year)).y(d => yScale(d["HR/G"])));
+
+    // Update x and y axes
+    svg.select(".x-axis").call(d3.axisBottom(xScale).ticks(d3.timeYear.every(1)));
+    svg.select(".y-axis").call(d3.axisLeft(yScale));
+  }
+  updateGraph([2000, 2023]);
+
   });
 
   // Function to update the graph based on the slider value
