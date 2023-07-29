@@ -218,7 +218,7 @@
       const annotations = [
     {
       note: {
-        label: "2015: Explanation for this year",
+        label: "2015: HR/Game ballon from 0.86 in 2014 to 1.01 in 2015",
         title: "2015"
       },
       x: xScale(new Date(2015, 0, 1)),
@@ -228,21 +228,45 @@
     },
     {
       note: {
-        label: "2018: Explanation for this year",
-        title: "2018"
+        label: "2019: HR/Game record is broken at 1.39 HR/Game. MLB research finds that 40% of the change in HR/Game is player behavior changes.",
+        title: "2019"
       },
-      x: xScale(new Date(2018, 0, 1)),
-      y: yScale(filteredData.find(d => d.Year.getFullYear() === 2018)['HR/G']),
+      x: xScale(new Date(2019, 0, 1)),
+      y: yScale(filteredData.find(d => d.Year.getFullYear() === 2019)['HR/G']),
       dy: -50,
       dx: 0
     },
     {
       note: {
-        label: "2021: Explanation for this year",
+        label: "2021: MLB warns teams to expect a less lively ball. A lighter ball designed to carry less was deployed.",
         title: "2021"
       },
       x: xScale(new Date(2021, 0, 1)),
       y: yScale(filteredData.find(d => d.Year.getFullYear() === 2021)['HR/G']),
+      dy: -50,
+      dx: 0
+    },
+    {
+      note: {
+        label: "2022: MLB stores baseballls in all 30 stadiums in humidors to stop the ball from drying up since that causes the ball to carry more.",
+        title: "2022"
+      },
+      x: xScale(new Date(2022, 0, 1)),
+      y: yScale(filteredData.find(d => d.Year.getFullYear() === 2022)['HR/G']),
+      dy: -50,
+      dx: 0
+    },
+    {
+      type: d3.annotationCalloutCircle,
+      note: {
+        label: "2023: MLB bans the shift in an effort to encourage more balls to be hit in play. Base sizes are increased to try to revive stealing bases to also encourage getting on base more often.",
+        title: "2022"
+      },
+      subject: {
+            radius: 50
+          },
+      x: xScale(new Date(2023, 0, 1)),
+      y: yScale(filteredData.find(d => d.Year.getFullYear() === 2023)['HR/G']),
       dy: -50,
       dx: 0
     }
