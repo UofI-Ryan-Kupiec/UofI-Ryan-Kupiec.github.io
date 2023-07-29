@@ -489,20 +489,7 @@
     svg.select(".y-axis").call(d3.axisLeft(yScale));
   }
   updateGraph([2000, 2023]);
-
-  });
-
-  // Function to update the graph based on the slider value
-    function updateGraph(selectedYears) {
-        const [startYear, endYear] = selectedYears;
-        const newData = data.filter(d => d.Year >= new Date(startYear, 0, 1) && d.Year <= new Date(endYear, 0, 1));
-
-        xScale.domain([new Date(startYear, 0, 1), new Date(endYear, 0, 1)]);
-        svg.select(".x-axis").call(d3.axisBottom(xScale).ticks(d3.timeYear.every(1)));
-        svg.select("path").attr("d", line.x(d => xScale(d.Year)));
-      }
-       updateGraph([1890, 2023]);
-    }
+}
 
     // CHART SELECTION FUNCTION
     function drawSelectedChart(data, chartType) {
