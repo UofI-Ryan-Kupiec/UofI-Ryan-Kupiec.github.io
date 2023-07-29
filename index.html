@@ -76,7 +76,7 @@
         .domain(d3.extent(data, function(d) { return d['HR/G']; }))
         .range([height - margin.bottom, margin.top]);
 
-      svg.append("g")
+     svg.append("g")
         .attr("transform", `translate(0, ${height - margin.bottom})`)
         .call(d3.axisBottom(xScale).ticks(d3.timeYear.every(10)));
 
@@ -408,7 +408,7 @@
         .domain(d3.extent(data, function(d) { return d['HR/G']; }))
         .range([height - margin.bottom, margin.top]);
 
-      svg.append("g")
+       const xAxis = svg.append("g")
         .attr("transform", `translate(0, ${height - margin.bottom})`)
         .call(d3.axisBottom(xScale).ticks(d3.timeYear.every(10)));
 
