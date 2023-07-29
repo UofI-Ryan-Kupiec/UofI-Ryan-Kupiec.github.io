@@ -357,8 +357,21 @@
         drawLineChart3(data);
       }
     
-    d3.select("#chart-selector").style("display", "block");
-    d3.select("#zoom-reset-button").style("display", "block");
+    d3.select("#chart-selector")
+      .style("display", "block")
+      .style("position", "absolute")
+      .style("top", "60%")
+      .style("right", "20px")
+      .style("padding", "12px 20px") 
+      .style("font-size", "16px");
+    
+    d3.select("#zoom-reset-button")
+      .style("display", "block")
+      .style("position", "absolute")
+      .style("top", "65%")
+      .style("right", "20px")
+      .style("padding", "12px 20px") 
+      .style("font-size", "16px");
 
       const svg = d3.select("#linechart-container svg");
       const zoom = d3.zoom()
@@ -371,6 +384,9 @@
         svg.selectAll("circle").attr("cx", d => newXScale(d.Year));
       });
     }
+
+  
+      
     
     // Initialize the scene number to 1 (first chart)
     let currentScene = 1;
