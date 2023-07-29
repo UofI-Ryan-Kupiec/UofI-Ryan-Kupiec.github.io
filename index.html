@@ -211,7 +211,7 @@ const line = svg.append('g')
         const yPos = yScale(d3.max(dataPoints, d => d['HR/G']));
 
     const annotations = [{
-      type: d3.annotationCalloutCircle,
+      type: customAnnotation,
       note: {
         label: "Statcast Era",
         title: "2015-2023"
