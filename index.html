@@ -687,6 +687,11 @@ const line = svg.append('g')
 
     // CHART SELECTION FUNCTION
     function drawSelectedChart(data, chartType) {
+      if (chartType === "hr") {
+        drawLineChart1(data, 1, lastChart = true);
+      } else if (chartType === "ba") {
+        drawLineChart3(data, lastChart = true);
+      }
       d3.select("#context-section").html("");
       const contextSection = d3.select("#context-section")
 
@@ -695,11 +700,6 @@ const line = svg.append('g')
         .style("font-size", "22px")
         .text("I hope these charts gave some insight into why there has been a flurry of rule changes in recent years to Major League Baseball. If there are any further trends you would like to explore, please use this dashboard. You can select which of the 2 showed charts you would like to use and can zoom by dragging over any parts of the charts. Double click the chart to reset the zoom parameters.");
 
-      if (chartType === "hr") {
-        drawLineChart1(data, 1, lastChart = true);
-      } else if (chartType === "ba") {
-        drawLineChart3(data, lastChart = true);
-      }
     }
 
     // Initialize the scene number to 1 (first chart)
