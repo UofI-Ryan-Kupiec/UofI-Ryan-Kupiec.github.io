@@ -43,12 +43,7 @@
     function drawLineChart1(data, scene_num, lastChart = false) {
       d3.select("#context-section").html("");
       const contextSection = d3.select("#context-section")
-/*
-      contextSection.append("h1")
-        .style("text-align", "center")
-        .style("font-size", "40px")
-        .text("Overview");
-*/
+
       contextSection.append("p")
         .style("text-align", "center")  
         .style("font-size", "22px")
@@ -133,9 +128,6 @@ const line = svg.append('g')
         .text("Home Runs per Game over Time");
 
 
-
-
-      
        // A function that set idleTimeOut to null
     let idleTimeout
     function idled() { idleTimeout = null; }
@@ -183,33 +175,16 @@ const line = svg.append('g')
         .y(d => yScale(d['HR/G']))
       );
   });      
-
-
       
       if(scene_num == 2){
         d3.select("#context-section").html("");
         const contextSection = d3.select("#context-section")
-  /*
-        contextSection.append("h1")
-          .style("text-align", "center")
-          .style("font-size", "40px")
-          .text("Overview");
-  */
+
         contextSection.append("p")
           .style("text-align", "center")  
           .style("font-size", "22px")
           .text("This new 'arms race' of data analysis was widely adopted by the league beginning in 2015 all teams began tracking advanded metrics using statcast. This new addition of advanced metrics highlighted what teams should value and as a result caused players to focus on the top metrics that would lead to larger contracts. This drove players to focus less on making contact frequently and more on making hard contact and getting the ball in there. This new prioirty explains this large spike in homeruns per game.");
-        
-        // const highlightStart = new Date(2014, 0, 1);
-        // const highlightEnd = new Date(2023, 0, 1);
-      
-        // const annotationGroup = svg.append("g") 
-          // .attr("class", "annotation")
-          // .style("pointer-events", "none");
-      
-        // const dataPoints = data.filter(d => d.Year >= highlightStart && d.Year <= highlightEnd);
-        // const yPos = yScale(d3.max(dataPoints, d => d['HR/G']));
-
+  
 const annotations = [
   {
     type: d3.annotationCalloutRect,
@@ -243,12 +218,7 @@ const annotations = [
       d3.select("#context-section").html("");
 
       const contextSection = d3.select("#context-section")
-/*
-      contextSection.append("h1")
-          .style("text-align", "center")
-          .style("font-size", "40px")
-          .text("Statcast Era");
-  */
+
       contextSection.append("p")
           .style("text-align", "center")  
           .style("font-size", "22px")
@@ -308,7 +278,7 @@ const annotations = [
       const annotations = [
     {
       note: {
-        label: "2015: HR/Game ballon from 0.86 in 2014 to 1.01 in 2015",
+        label: "HR/Game ballon from 0.86 in 2014 to 1.01 in 2015",
         title: "2015"
       },
       x: xScale(new Date(2015, 0, 1)),
@@ -318,7 +288,7 @@ const annotations = [
     },
     {
       note: {
-        label: "2019: HR/Game record is broken at 1.39 HR/Game. MLB research finds that 40% of the change in HR/Game is player behavior changes.",
+        label: "HR/Game record is broken at 1.39 HR/Game. MLB research finds that 40% of the change in HR/Game is player behavior changes.",
         title: "2019"
       },
       x: xScale(new Date(2019, 0, 1)),
@@ -328,7 +298,7 @@ const annotations = [
     },
     {
       note: {
-        label: "2021: MLB warns teams to expect a less lively ball. A lighter ball designed to carry less was deployed.",
+        label: "MLB warns teams to expect a less lively ball. A lighter ball designed to carry less was deployed.",
         title: "2021"
       },
       x: xScale(new Date(2021, 0, 1)),
@@ -338,7 +308,7 @@ const annotations = [
     },
     {
       note: {
-        label: "2022: MLB stores baseballls in all 30 stadiums in humidors to stop the ball from drying up since that causes the ball to carry more.",
+        label: "MLB stores baseballls in all 30 stadiums in humidors to stop the ball from drying up since that causes the ball to carry more.",
         title: "2022"
       },
       x: xScale(new Date(2022, 0, 1)),
@@ -349,8 +319,8 @@ const annotations = [
     {
       type: d3.annotationCalloutCircle,
       note: {
-        label: "2023: MLB bans the shift in an effort to encourage more balls to be hit in play. Base sizes are increased to try to revive stealing bases to also encourage getting on base more often.",
-        title: "2022"
+        label: "MLB bans the shift in an effort to encourage more balls to be hit in play. Base sizes are increased to try to revive stealing bases to also encourage getting on base more often.",
+        title: "2023"
       },
       subject: {
             radius: 10
@@ -456,11 +426,59 @@ const line = svg.append('g')
         .style("font-size", "1.5em")
         .text("Batting Average Over The Last 25 Years");
 
-      // Shift began
-      // Shift was banned; pitch clocks added
-      //statcast introduced 
-      // DH in both leagues 2020
+       const annotations = [
+    {
+      note: {
+        label: "Statcast implemented in all 30 stadiums which enhances the statistical revolution",
+        title: "2015 Statcast Revoultion begins:"
+      },
+      x: xScale(new Date(2015, 0, 1)),
+      y: yScale(filteredData.find(d => d.Year.getFullYear() === 2015)['BA']),
+      dy: -50,
+      dx: 0
+    },
+    {
+      note: {
+        label: "Infield shifts are used on a record 25% (47,244) of plate appearances doubling the number from 2017 (22,169)",
+        title: "2019 Infield Shifts Soar:"
+      },
+      x: xScale(new Date(2019, 0, 1)),
+      y: yScale(filteredData.find(d => d.Year.getFullYear() === 2019)['BA']),
+      dy: 150,
+      dx: 0
+    },
+    {
+      note: {
+        label: "Designated hitter is allowed in both the American and National League",
+        title: "2020 Universal DH Allowed:"
+      },
+      x: xScale(new Date(2020, 0, 1)),
+      y: yScale(filteredData.find(d => d.Year.getFullYear() === 2020)['BA']),
+      dy: -50,
+      dx: 0
+    },
+    {
+      note: {
+        label: "MLB bans shift, pitch clocks are added, and bases are enlarged in an effort to encourage more balls being put in play.",
+        title: "2023 MLB Introduces Major Rule Changes:"
+      },
+      x: xScale(new Date(2023, 0, 1)),
+      y: yScale(filteredData.find(d => d.Year.getFullYear() === 2023)['BA']),
+      dy: -100,
+      dx: 0
+    }
+  ];
 
+  const makeAnnotations = d3.annotation()
+    .type(d3.annotationLabel)
+    .annotations(annotations);
+
+  svg.append("g")
+    .attr("class", "annotation-group")
+    .call(makeAnnotations);
+    }
+
+      
       
        // A function that set idleTimeOut to null
     let idleTimeout
@@ -515,12 +533,7 @@ const line = svg.append('g')
      function drawLineChart4(data) {
       d3.select("#context-section").html("");
       const contextSection = d3.select("#context-section")
-/*
-      contextSection.append("h1")
-        .style("text-align", "center")
-        .style("font-size", "40px")
-        .text("Conclusion");
-*/
+
       contextSection.append("p")
         .style("text-align", "center")  
         .style("font-size", "22px")
@@ -677,12 +690,7 @@ const line = svg.append('g')
         drawLineChart1(data, 1, lastChart = true);
         d3.select("#context-section").html("");
         const contextSection = d3.select("#context-section")
-/*
-        contextSection.append("h1")
-          .style("text-align", "center")
-          .style("font-size", "40px")
-          .text("Conclusion");
-*/
+
         contextSection.append("p")
           .style("text-align", "center")  
           .style("font-size", "22px")
@@ -692,12 +700,7 @@ const line = svg.append('g')
         drawLineChart3(data, lastChart = true);
         d3.select("#context-section").html("");
         const contextSection = d3.select("#context-section")
-/*
-        contextSection.append("h1")
-          .style("text-align", "center")
-          .style("font-size", "40px")
-          .text("Conclusion");
-*/
+
         contextSection.append("p")
           .style("text-align", "center")  
           .style("font-size", "22px")
