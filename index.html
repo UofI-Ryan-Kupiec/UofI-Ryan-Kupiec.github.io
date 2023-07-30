@@ -757,6 +757,18 @@ const line = svg.append('g')
     });
 */
 
+    async function init() {
+      try {
+        const data = await d3.csv(dataUrl, function (d) {
+          return {
+            Year: d3.timeParse('%Y')(d.Year.toString()),
+            'HR/G': +d['HR/G'],
+            'BA': +d['BA']
+          };
+        });
+
+        drawLineChart1(data);
+
     let currentScene = 1;
     
     d3.select('#next-button').on('click', function () {
@@ -772,18 +784,6 @@ const line = svg.append('g')
           drawLineChart4(data);
     }
     });
-
-    async function init() {
-      try {
-        const data = await d3.csv(dataUrl, function (d) {
-          return {
-            Year: d3.timeParse('%Y')(d.Year.toString()),
-            'HR/G': +d['HR/G'],
-            'BA': +d['BA']
-          };
-        });
-
-        drawLineChart1(data);
       } catch (error) {
         console.error('Error loading data:', error);
       }
