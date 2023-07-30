@@ -719,6 +719,7 @@ const line = svg.append('g')
 
     }
 
+    /*
     let currentScene = 1;
 
     d3.select("#next-button").on("click", function() {
@@ -754,8 +755,42 @@ const line = svg.append('g')
     }).then(function(data) {
       drawLineChart1(data);
     });
+*/
 
+    let currentScene = 1;
+    // Function to draw the initial line chart
+    async function init() {
+      try {
+        const data = await d3.csv(dataUrl, function (d) {
+          return {
+            Year: d3.timeParse('%Y')(d.Year.toString()),
+            'HR/G': +d['HR/G'],
+            'BA': +d['BA']
+          };
+        });
 
+        drawLineChart1(data);
+      } catch (error) {
+        console.error('Error loading data:', error);
+      }
+    }
+
+     // Function to switch between scenes and update charts
+    d3.select('#next-button').on('click', function () {
+      svg.selectAll('.annotation').remove();
+      currentScene++;
+        if (currentScene === 1 || currentScene === 2) {
+          drawLineChart1(data, currentScene);
+        } else if (currentScene === 3) {
+          drawLineChart2(data);
+        } else if (currentScene === 4) {
+          drawLineChart3(data);
+        }else {
+          drawLineChart4(data);
+    });
+
+    // Call the init function to initialize the chart
+    init();
     
   </script>
 </body>
