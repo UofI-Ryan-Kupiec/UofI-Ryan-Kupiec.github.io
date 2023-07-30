@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Baseball HR/G and BA Line Charts</title>
+  <title>CS 416 Final Project</title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
 </head>
@@ -47,12 +47,12 @@
       contextSection.append("p")
         .style("text-align", "center")  
         .style("font-size", "22px")
-        .text("Over the last decade baseball has seen a change unlike any stretch seen in sports history. Statistics has taken over the game and caused major changes to the way the game is played. Not all of these changes in play have been good for the game. As seen in this chart, one major change we have seen in the last few years is a staggering increase in the homerun rate.");
+        .text("The MLB has made massive rule changes to America's pasttime over the last few years. Casual fans may wonder what has caused these decisions. Over the last decade baseball has seen a dramatic change in the way the game is played. Statistics has taken over the game and caused players to alter the way they play the game. As this chart displays, one major change we have seen in the last few years is a staggering increase in the homerun rate.");
 
       contextSection.append("p")
         .style("text-align", "center")  
         .style("font-size", "22px")
-        .text("Please select the Next Chart button on the right when finished with this page!");
+        .text("Please select the Next Chart button on the right when finished with this page.");
       
       const svg = d3.select("#linechart-container svg");
       svg.html("");
@@ -127,22 +127,18 @@ const line = svg.append('g')
         .style("font-size", "1.5em")
         .text("Home Runs per Game over Time");
 
-
-       // A function that set idleTimeOut to null
     let idleTimeout
     function idled() { idleTimeout = null; }
 
   function updateChart(event) {
-    // UPDATE: What are the selected boundaries?
     const extent = event.selection;
 
-    // If no selection, back to initial coordinate. Otherwise, update X axis domain
     if (!extent) {
-      if (!idleTimeout) return idleTimeout = setTimeout(idled, 350); // This allows waiting a little bit
+      if (!idleTimeout) return idleTimeout = setTimeout(idled, 350); 
       xScale.domain(d3.extent(data, function(d) { return d.Year; }));
     } else {
       xScale.domain([xScale.invert(extent[0]), xScale.invert(extent[1])]);
-      line.select(".brush").call(brush.move, null); // This removes the grey brush area as soon as the selection has been done
+      line.select(".brush").call(brush.move, null); 
     }
 
     xAxis.transition().duration(1000).call(d3.axisBottom(xScale));
@@ -164,7 +160,6 @@ const line = svg.append('g')
       .y(d => yScale(d['HR/G']))
     );
 
-  // If user double clicks, reinitialize the chart
   svg.on("dblclick", function() {
     xScale.domain(d3.extent(data, function(d) { return d.Year; }));
     xAxis.transition().call(d3.axisBottom(xScale));
@@ -183,32 +178,32 @@ const line = svg.append('g')
         contextSection.append("p")
           .style("text-align", "center")  
           .style("font-size", "22px")
-          .text("This new 'arms race' of data analysis was widely adopted by the league beginning in 2015 all teams began tracking advanded metrics using statcast. This new addition of advanced metrics highlighted what teams should value and as a result caused players to focus on the top metrics that would lead to larger contracts. This drove players to focus less on making contact frequently and more on making hard contact and getting the ball in there. This new prioirty explains this large spike in homeruns per game.");
-  
-const annotations = [
-  {
-    type: d3.annotationCalloutRect,
-    note: {
-      label: "Statcast Era",
-      title: "2015-2023"
-    },
-    subject: {
-      width: xScale(new Date(2023, 0, 1)) - xScale(new Date(2015, 0, 1)),
-      height: height - margin.bottom - margin.top, 
-    },
-    x: xScale(new Date(2015, 0, 1)), 
-    y: margin.top, 
-    dy: 500,
-    dx: -50
-  }
-];
+          .text("The 'arms race' of data analysis began in 2015 when all teams began tracking advanded metrics using statcast. Advanced metrics highlighted what teams should value and as a result caused players to focus on the top metrics that would lead to larger contracts. This drove players to focus less on making contact frequently and more on making hard contact and getting the ball in the air. As a result, the focus shifted from hitting the ball in play to hitting more balls out of the stadium. This resulted in less action for a game that is already critisized as being boring.");
+        
+      const annotations = [
+        {
+          type: d3.annotationCalloutRect,
+          note: {
+            label: "Statcast Era",
+            title: "2015-2023"
+          },
+          subject: {
+            width: xScale(new Date(2023, 0, 1)) - xScale(new Date(2015, 0, 1)),
+            height: height - margin.bottom - margin.top, 
+          },
+          x: xScale(new Date(2015, 0, 1)), 
+          y: margin.top, 
+          dy: 500,
+          dx: -50
+        }
+      ];
 
-  const makeAnnotations = d3.annotation()
-    .annotations(annotations);
-
-  svg.append("g")
-    .call(makeAnnotations);
-    }
+      const makeAnnotations = d3.annotation()
+        .annotations(annotations);
+    
+      svg.append("g")
+        .call(makeAnnotations);
+        }
 
     }
 
@@ -222,7 +217,7 @@ const annotations = [
       contextSection.append("p")
           .style("text-align", "center")  
           .style("font-size", "22px")
-          .text("This jump in homeruns per game caused many investigations by the league into whether the balls were 'juiced'. A thorough investigation found that 40% of the increase in homeruns in 2019 was due to play behavior changing. Players began trying to swing harder and hit the ball higher with the hopes of hitting more homeruns. This lead to less balls being put in play. The MLB has a reputation as a boring sport and less balls in play means less action and as a result less interest from casual fans. The MLB has put many ");
+          .text("The jump in homeruns from 2014-2022 led to a hypothesis by the league that the baseballs were 'juiced' as a result of inconsistent manufacturing. A thorough investigation by the league found that there were some issues with manufacturing, but 40% of the increase in homeruns in 2019 was due to player behavior changes. Since then the MLB has deployed many different rule changes in a strong effort to add more action to the game.");
       
       const svg = d3.select("#linechart-container svg");
     
@@ -327,7 +322,7 @@ const annotations = [
           },
       x: xScale(new Date(2023, 0, 1)),
       y: yScale(filteredData.find(d => d.Year.getFullYear() === 2023)['HR/G']),
-      dy: 50,
+      dy: 100,
       dx: 0
     }
   ];
