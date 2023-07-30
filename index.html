@@ -43,12 +43,12 @@
     function drawLineChart1(data, scene_num, lastChart = false) {
       d3.select("#context-section").html("");
       const contextSection = d3.select("#context-section")
-
+/*
       contextSection.append("h1")
         .style("text-align", "center")
         .style("font-size", "40px")
         .text("Overview");
-
+*/
       contextSection.append("p")
         .style("text-align", "center")  
         .style("font-size", "22px")
@@ -189,12 +189,12 @@ const line = svg.append('g')
       if(scene_num == 2){
         d3.select("#context-section").html("");
         const contextSection = d3.select("#context-section")
-  
+  /*
         contextSection.append("h1")
           .style("text-align", "center")
           .style("font-size", "40px")
           .text("Overview");
-  
+  */
         contextSection.append("p")
           .style("text-align", "center")  
           .style("font-size", "22px")
@@ -235,24 +235,6 @@ const annotations = [
     .call(makeAnnotations);
     }
 
-        
-        /*
-        annotationGroup.append("rect")
-          .attr("x", xScale(highlightStart))
-          .attr("y", margin.top) // yPos
-          .attr("width", xScale(highlightEnd) - xScale(highlightStart))
-          .attr("height", height - margin.bottom - margin.top) // - yPos
-          .attr("fill", "yellow")
-          .attr("opacity", 0.3);
-  
-      annotationGroup.append("text")
-        .attr("x", (xScale(highlightStart) + xScale(highlightEnd)) / 2)
-        .attr("y", xScale(highlightStart)) // Adjust the y position to place the text above the arrow
-        .attr("text-anchor", "middle")
-        .style("font-size", "16px")
-        .text("Years 2014-2023: Explanation for these highlighted years");
-      }
-      */
     }
 
     function drawLineChart2(data, lastChart = false) {
@@ -261,12 +243,12 @@ const annotations = [
       d3.select("#context-section").html("");
 
       const contextSection = d3.select("#context-section")
-
+/*
       contextSection.append("h1")
           .style("text-align", "center")
           .style("font-size", "40px")
           .text("Statcast Era");
-  
+  */
       contextSection.append("p")
           .style("text-align", "center")  
           .style("font-size", "22px")
@@ -533,12 +515,12 @@ const line = svg.append('g')
      function drawLineChart4(data) {
       d3.select("#context-section").html("");
       const contextSection = d3.select("#context-section")
-
+/*
       contextSection.append("h1")
         .style("text-align", "center")
         .style("font-size", "40px")
         .text("Conclusion");
-
+*/
       contextSection.append("p")
         .style("text-align", "center")  
         .style("font-size", "22px")
@@ -695,12 +677,12 @@ const line = svg.append('g')
         drawLineChart1(data, 1, lastChart = true);
         d3.select("#context-section").html("");
         const contextSection = d3.select("#context-section")
-
+/*
         contextSection.append("h1")
           .style("text-align", "center")
           .style("font-size", "40px")
           .text("Conclusion");
-
+*/
         contextSection.append("p")
           .style("text-align", "center")  
           .style("font-size", "22px")
@@ -710,12 +692,12 @@ const line = svg.append('g')
         drawLineChart3(data, lastChart = true);
         d3.select("#context-section").html("");
         const contextSection = d3.select("#context-section")
-
+/*
         contextSection.append("h1")
           .style("text-align", "center")
           .style("font-size", "40px")
           .text("Conclusion");
-
+*/
         contextSection.append("p")
           .style("text-align", "center")  
           .style("font-size", "22px")
