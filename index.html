@@ -457,8 +457,8 @@ const line = svg.append('g')
       },
       x: xScale(new Date(2020, 0, 1)),
       y: yScale(filteredData.find(d => d.Year.getFullYear() === 2020)['BA']),
-      dy: -200,
-      dx: 0
+      dy: -100,
+      dx: 75
     },
     {
       note: {
@@ -467,7 +467,7 @@ const line = svg.append('g')
       },
       x: xScale(new Date(2023, 0, 1)),
       y: yScale(filteredData.find(d => d.Year.getFullYear() === 2023)['BA']),
-      dy: -400,
+      dy: -300,
       dx: -50
     }
   ];
