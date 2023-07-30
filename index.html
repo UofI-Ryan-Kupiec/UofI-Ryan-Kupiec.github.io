@@ -331,7 +331,8 @@ const line = svg.append('g')
       y: yScale(filteredData.find(d => d.Year.getFullYear() === 2022)['HR/G']),
       dy: -100,
       dx: 0
-    },
+    }
+    /*,
     {
       type: d3.annotationCalloutCircle,
       note: {
@@ -346,6 +347,7 @@ const line = svg.append('g')
       dy: 100,
       dx: 0
     }
+    */
   ];
 
   const makeAnnotations = d3.annotation()
