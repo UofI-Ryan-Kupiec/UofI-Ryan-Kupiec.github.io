@@ -222,9 +222,9 @@ const annotations = [
       height: yScale(0) - yScale(data.find(d => d.Year.getFullYear() === 2023)['HR/G'])
     },
     x: xScale(new Date(2015, 0, 1)), // Start date
-    y: yScale(data.find(d => d.Year.getFullYear() === 2023)['HR/G']),
-    dy: -50,
-    dx: 0
+    y: height - margin.bottom - margin.top, // yScale(data.find(d => d.Year.getFullYear() === 2023)['HR/G']),
+    dy: 100,
+    dx: -50
   }
 ];
 
