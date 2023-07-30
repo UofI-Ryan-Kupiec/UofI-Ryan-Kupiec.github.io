@@ -20,7 +20,8 @@
   <button id="next-button">Next Chart</button>
 
   <script>
-    
+
+    // SET PARAMETERS
     const svgWidth = window.innerWidth;
     const svgHeight = window.innerHeight;
     const margin = { top: 50, right: 50, bottom: 70, left: 70 };
@@ -28,11 +29,13 @@
     const height = svgHeight - margin.top - margin.bottom;
     const dataUrl = "https://raw.githubusercontent.com/UofI-Ryan-Kupiec/UofI-Ryan-Kupiec.github.io/main/Baseball_Hitting_Historic_Data.csv";
 
+    // SET SVG CONTAINER
     const svg = d3.select("#linechart-container")
       .append("svg")
       .attr("width", svgWidth)
       .attr("height", svgHeight);
 
+    // ADD NEXT BUTTON
     d3.select("#next-button")
       .style("position", "absolute")
       .style("top", "50%")
@@ -40,6 +43,7 @@
       .style("padding", "12px 20px") 
       .style("font-size", "16px");
 
+    // HR/G CHARTS
     function drawLineChart1(data, scene_num, lastChart = false) {
       d3.select("#context-section").html("");
       const contextSection = d3.select("#context-section")
@@ -88,10 +92,9 @@
 const line = svg.append('g')
        .attr("clip-path", "url(#clip)")
     
-    // Add the line
     line.append("path")
       .datum(data)
-      .attr("class", "line")  // I add the class line to be able to modify this line later on.
+      .attr("class", "line")
       .attr("fill", "none")
       .attr("stroke", "blue")
       .attr("stroke-width", 2)
@@ -130,6 +133,7 @@ const line = svg.append('g')
     let idleTimeout
     function idled() { idleTimeout = null; }
 
+  // UPDATE CHART WHEN ZOOMING
   function updateChart(event) {
     const extent = event.selection;
 
@@ -207,6 +211,7 @@ const line = svg.append('g')
 
     }
 
+    // ZOOMED IN HR/G CHART
     function drawLineChart2(data, lastChart = false) {
       const filteredData = data.filter(d => d.Year >= new Date(2014, 0, 1) && d.Year <= new Date(2023, 0, 1));
       
@@ -355,10 +360,8 @@ const line = svg.append('g')
           .text("As mentioned the increase in homeruns has had an adverse affect on balls being put in play and ultimately the number of runners that reach base. This negative trend has seen the MLB make drastic rule changes such as adding a universal designated hitter, pitch clocks, banning the shift, and increasing the sizes of the bases. It may take a while to know how much affect rules like this have on player behavior, but it appears evident that the MLB is driven to turn these trends around. Whether there are more rule changes coming in 2024 remains to be seen.");
       
       const svg = d3.select("#linechart-container svg");
-      // Clear the contents of the SVG container
       svg.html("");
 
-      // Setup scales and axes for the second chart
       const xScale = d3.scaleTime()
         .domain(d3.extent(filteredData, function(d) { return d.Year; }))
         .range([margin.left, width - margin.right]);
@@ -390,10 +393,9 @@ const line = svg.append('g')
 const line = svg.append('g')
        .attr("clip-path", "url(#clip)")
     
-    // Add the line
     line.append("path")
       .datum(filteredData)
-      .attr("class", "line")  // I add the class line to be able to modify this line later on.
+      .attr("class", "line")  
       .attr("fill", "none")
       .attr("stroke", "blue")
       .attr("stroke-width", 2)
@@ -481,23 +483,19 @@ const line = svg.append('g')
           .attr("class", "annotation-group")
           .call(makeAnnotations);
       }
-      
-      
-       // A function that set idleTimeOut to null
+    
     let idleTimeout
     function idled() { idleTimeout = null; }
 
   function updateChart(event) {
-    // UPDATE: What are the selected boundaries?
     const extent = event.selection;
 
-    // If no selection, back to initial coordinate. Otherwise, update X axis domain
     if (!extent) {
-      if (!idleTimeout) return idleTimeout = setTimeout(idled, 350); // This allows waiting a little bit
+      if (!idleTimeout) return idleTimeout = setTimeout(idled, 350);
       xScale.domain(d3.extent(filteredData, function(d) { return d.Year; }));
     } else {
       xScale.domain([xScale.invert(extent[0]), xScale.invert(extent[1])]);
-      line.select(".brush").call(brush.move, null); // This removes the grey brush area as soon as the selection has been done
+      line.select(".brush").call(brush.move, null);
     }
 
     xAxis.transition().duration(1000).call(d3.axisBottom(xScale));
@@ -519,7 +517,6 @@ const line = svg.append('g')
       .y(d => yScale(d['BA']))
     );
 
-  // If user double clicks, reinitialize the chart
   svg.on("dblclick", function() {
     xScale.domain(d3.extent(filteredData, function(d) { return d.Year; }));
     xAxis.transition().call(d3.axisBottom(xScale));
@@ -532,7 +529,7 @@ const line = svg.append('g')
   });      
     }
 
-    // LAST CHART + USER INTERACTION
+    // REMAKES FIRST CHART + USER INTERACTION
      function drawLineChart4(data) {
       d3.select("#context-section").html("");
       const contextSection = d3.select("#context-section")
@@ -542,10 +539,8 @@ const line = svg.append('g')
         .style("font-size", "22px")
         .text("I hope these charts gave some insight into why there has been a flurry of rule changes in recent years to Major League Baseball. If there are any further trends you would like to explore, please use this dashboard. You can select which of the 2 showed charts you would like to use and can zoom by dragging over any parts of the charts. Double click the chart to reset the zoom parameters.");
 
-       // Remove next button
       d3.select("#next-button").style("display", "none")
 
-       // add chart selector dropdown
       d3.select("#chart-selector")
       .style("display", "block")
       .style("position", "absolute")
@@ -593,10 +588,9 @@ const line = svg.append('g')
 const line = svg.append('g')
        .attr("clip-path", "url(#clip)")
     
-    // Add the line
     line.append("path")
       .datum(data)
-      .attr("class", "line")  // I add the class line to be able to modify this line later on.
+      .attr("class", "line")
       .attr("fill", "none")
       .attr("stroke", "blue")
       .attr("stroke-width", 2)
@@ -605,7 +599,6 @@ const line = svg.append('g')
         .y(d => yScale(d['HR/G']))
         )
 
-    // Add the brushing
     line
       .append("g")
         .attr("class", "brush")
@@ -636,21 +629,18 @@ const line = svg.append('g')
           drawSelectedChart(data, selectedChart);
       });
 
-    // A function that set idleTimeOut to null
     let idleTimeout
     function idled() { idleTimeout = null; }
 
   function updateChart(event) {
-    // UPDATE: What are the selected boundaries?
     const extent = event.selection;
 
-    // If no selection, back to initial coordinate. Otherwise, update X axis domain
     if (!extent) {
-      if (!idleTimeout) return idleTimeout = setTimeout(idled, 350); // This allows waiting a little bit
+      if (!idleTimeout) return idleTimeout = setTimeout(idled, 350);
       xScale.domain(d3.extent(data, function(d) { return d.Year; }));
     } else {
       xScale.domain([xScale.invert(extent[0]), xScale.invert(extent[1])]);
-      line.select(".brush").call(brush.move, null); // This removes the grey brush area as soon as the selection has been done
+      line.select(".brush").call(brush.move, null); 
     }
 
     xAxis.transition().duration(1000).call(d3.axisBottom(xScale));
@@ -672,7 +662,6 @@ const line = svg.append('g')
       .y(d => yScale(d['HR/G']))
     );
 
-  // If user double clicks, reinitialize the chart
   svg.on("dblclick", function() {
     xScale.domain(d3.extent(data, function(d) { return d.Year; }));
     xAxis.transition().call(d3.axisBottom(xScale));
@@ -702,16 +691,13 @@ const line = svg.append('g')
 
     }
 
-    // Initialize the scene number to 1 (first chart)
     let currentScene = 1;
 
-    // Attach a click event listener to the "Next" button
     d3.select("#next-button").on("click", function() {
       svg.selectAll(".annotation").remove();
-      // Increment the current scene number
+
       currentScene++;
 
-      // Fetch data from the CSV file and draw the appropriate chart
       d3.csv(dataUrl, function(d) {
         return {
           Year: d3.timeParse('%Y')(d.Year.toString()),
@@ -720,18 +706,17 @@ const line = svg.append('g')
         };
       }).then(function(data) {
         if (currentScene === 1 || currentScene === 2) {
-          drawLineChart1(data, currentScene); // Draw the first chart
+          drawLineChart1(data, currentScene);
         } else if (currentScene === 3) {
-          drawLineChart2(data); // Draw the second chart
+          drawLineChart2(data);
         } else if (currentScene === 4) {
-          drawLineChart3(data); // Draw the second chart
+          drawLineChart3(data);
         }else {
-          drawLineChart4(data); // Draw the second chart
+          drawLineChart4(data);
         }
       });
     });
 
-    // Fetch data from the CSV file and draw the initial chart
     d3.csv(dataUrl, function(d) {
       return {
         Year: d3.timeParse('%Y')(d.Year.toString()),
@@ -739,7 +724,7 @@ const line = svg.append('g')
         'BA': +d['BA']
       };
     }).then(function(data) {
-      drawLineChart1(data); // Draw the initial chart with the first set of data
+      drawLineChart1(data);
     });
 
 
