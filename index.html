@@ -219,11 +219,11 @@ const annotations = [
     },
     subject: {
       width: xScale(new Date(2023, 0, 1)) - xScale(new Date(2015, 0, 1)),
-      height: height - margin.bottom - margin.top, // yScale(0) - yScale(data.find(d => d.Year.getFullYear() === 2023)['HR/G'])
+      height: height - margin.bottom - margin.top, 
     },
-    x: xScale(new Date(2015, 0, 1)), // Start date
-    y: margin.top, // height - margin.bottom -   yScale(data.find(d => d.Year.getFullYear() === 2023)['HR/G']),
-    dy: 150,
+    x: xScale(new Date(2015, 0, 1)), 
+    y: margin.top, 
+    dy: 225,
     dx: -50
   }
 ];
