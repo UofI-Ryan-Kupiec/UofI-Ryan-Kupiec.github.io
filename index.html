@@ -200,18 +200,18 @@ const line = svg.append('g')
           .style("font-size", "22px")
           .text("This new 'arms race' of data analysis was widely adopted by the league beginning in 2015 all teams began tracking advanded metrics using statcast. This new addition of advanced metrics highlighted what teams should value and as a result caused players to focus on the top metrics that would lead to larger contracts. This drove players to focus less on making contact frequently and more on making hard contact and getting the ball in there. This new prioirty explains this large spike in homeruns per game.");
         
-        const highlightStart = new Date(2014, 0, 1);
-        const highlightEnd = new Date(2023, 0, 1);
+        // const highlightStart = new Date(2014, 0, 1);
+        // const highlightEnd = new Date(2023, 0, 1);
       
-        const annotationGroup = svg.append("g") 
-          .attr("class", "annotation")
-          .style("pointer-events", "none");
+        // const annotationGroup = svg.append("g") 
+          // .attr("class", "annotation")
+          // .style("pointer-events", "none");
       
-        const dataPoints = data.filter(d => d.Year >= highlightStart && d.Year <= highlightEnd);
-        const yPos = yScale(d3.max(dataPoints, d => d['HR/G']));
+        // const dataPoints = data.filter(d => d.Year >= highlightStart && d.Year <= highlightEnd);
+        // const yPos = yScale(d3.max(dataPoints, d => d['HR/G']));
 
     const annotations = [{
-      type: customAnnotation,
+      type: annotationCalloutCircle,
       note: {
         label: "Statcast Era",
         title: "2015-2023"
